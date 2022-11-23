@@ -59,6 +59,26 @@ class DbHelper {
         .delete();
   }
 
+  static Future<void> clearCartItems(String uid, List<CartModel> cartList){
+    final wb = _db.batch();
+    for(var cart in cartList) {
+      final doc = _db.collection(collectionUser)
+          .doc(uid)
+          .collection(collectionCart)
+          .doc(cart.productId);
+      wb.delete(doc);
+    }
+    return wb.commit();
+  }
+
+  static Future<void> updateCartItemQuantity(num quantity, String pid, String uid){
+    return _db.collection(collectionUser)
+        .doc(uid)
+        .collection(collectionCart)
+        .doc(pid)
+        .update({cartProductQuantity : quantity});
+  }
+
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getProductById(String id) =>
       _db.collection(collectionProduct).doc(id).snapshots();
 

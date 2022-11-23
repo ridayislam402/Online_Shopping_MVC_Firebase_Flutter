@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_shopping/customwidgets/product_item.dart';
+import 'package:online_shopping/pages/cart_page.dart';
 import 'package:provider/provider.dart';
 
 import '../customwidgets/main_drawer.dart';
@@ -18,6 +19,39 @@ class ProductPage extends StatelessWidget {
       drawer: MainDrawer(),
       appBar: AppBar(
         title: const Text('Products'),
+        actions: [
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, CartPage.routeName),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(
+                    Icons.shopping_cart,
+                    size: 30,
+                  ),
+                  Positioned(
+                    left: -2,
+                    top: -1,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.red, shape: BoxShape.circle),
+                      child: FittedBox(
+                        child: Consumer<CartProvider>(
+                            builder: (context, provider, _) =>
+                                Text('${provider.totalItemsInCart}')),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
       body: Consumer<ProductProvider>(
       builder: (context, provider, _) => provider.productList.isEmpty
