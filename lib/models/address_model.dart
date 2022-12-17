@@ -3,7 +3,7 @@ class AddressModel {
   String streetAddress;
   String area;
   String city;
-  int zipCode;
+  String zipCode;
 
 
   AddressModel({
