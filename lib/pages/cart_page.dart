@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_shopping/pages/checkout_page.dart';
 import 'package:provider/provider.dart';
 
 import '../customwidgets/cart_item.dart';
@@ -66,9 +67,10 @@ class CartPage extends StatelessWidget {
                       ),
                       const Spacer(),
                       ElevatedButton(
-                        onPressed:() {
+                        onPressed:
+                          provider.totalItemsInCart == 0 ?
+                          null : () => Navigator.pushNamed(context, CheckoutPage.routeName),
 
-                        },
                        // provider.totalItemsInCart == 0 ?
                        // null : () => Navigator.pushNamed(context, CheckoutPage.routeName),
                         child: const Text('Checkout'),

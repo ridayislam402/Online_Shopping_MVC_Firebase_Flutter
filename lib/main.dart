@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:online_shopping/pages/cart_page.dart';
+import 'package:online_shopping/pages/checkout_page.dart';
 import 'package:online_shopping/pages/launcher_page.dart';
 import 'package:online_shopping/pages/login_page.dart';
+import 'package:online_shopping/pages/order_successful_page.dart';
 import 'package:online_shopping/pages/product_page.dart';
 import 'package:online_shopping/providers/card_provider.dart';
 import 'package:online_shopping/providers/order_provider.dart';
@@ -42,7 +44,8 @@ class MyApp extends StatelessWidget {
         LoginPage.routeName : (context) => LoginPage(),
         ProductPage.routeName : (context) => ProductPage(),
         CartPage.routeName : (context) => CartPage(),
-      //  CategoryPage.routeName : (context) => CategoryPage(),
+        CheckoutPage.routeName : (context) => CheckoutPage(),
+        OrderSuccessfulPage.routeName : (context) => OrderSuccessfulPage(),
       //  OrderPage.routeName : (context) => OrderPage(),
       //  UserPage.routeName : (context) => UserPage(),
 

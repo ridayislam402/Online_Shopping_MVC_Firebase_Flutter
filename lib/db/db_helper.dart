@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/cart_model.dart';
 import '../models/category_model.dart';
+import '../models/order_model.dart';
 import '../models/product_model.dart';
 import '../models/purchase_model.dart';
 import '../models/user_model.dart';
@@ -85,4 +86,43 @@ class DbHelper {
 
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getOrderConstants() =>
       _db.collection(collectionOrderSettings).doc(documentOrderConstant).snapshots();
+
+  static Future<DocumentSnapshot<Map<String, dynamic>>> getUserOnce(String uid) =>
+      _db.collection(collectionUser).doc(uid).get();
+
+  static Future<void> addOrder(OrderModel orderModel, List<CartModel> cartList) async {
+    final wb = _db.batch();
+    final orderDoc = _db.collection(collectionOrder).doc();
+    orderModel.orderId = orderDoc.id;
+    wb.set(orderDoc, orderModel.toMap());
+    final userDoc = _db.collection(collectionUser).doc(orderModel.userId);
+    wb.update(userDoc, {'address' : orderModel.deliveryAddress.toMap()});
+    for(var cartM in cartList) {
+      final detailsDoc = orderDoc.collection(collectionOrderDetails).doc(cartM.productId);
+      wb.set(detailsDoc, cartM.toMap());
+      final newStock = cartM.stock - cartM.quantity;
+      final proDoc = _db.collection(collectionProduct).doc(cartM.productId);
+      wb.update(proDoc, {productStock : newStock});
+      final snapshot = await _db.collection(collectionCategory)
+          .where(categoryName, isEqualTo: cartM.category).get();
+      final catDoc = snapshot.docs.first.reference;
+      final previousCount = snapshot.docs.first.data()[categoryProductCount];
+      wb.update(catDoc, {categoryProductCount : previousCount - cartM.quantity});
+    }
+    return wb.commit();
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllOrders(String uid) {
+    return _db.collection(collectionOrder)
+        .where(orderUserIDKey, isEqualTo: uid)
+        .snapshots();
+  }
+
+  static Future<QuerySnapshot<Map<String, dynamic>>> getOrderDetails(String orderId) {
+    return _db.collection(collectionOrder)
+        .doc(orderId)
+        .collection(collectionOrderDetails)
+        .get();
+  }
+
 }
