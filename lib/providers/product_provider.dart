@@ -13,8 +13,9 @@ import '../models/purchase_model.dart';
 
 class ProductProvider extends ChangeNotifier {
   List<CategoryModel> categoryList = [];
-  List<PurchaseModel> purchaseListOfSpecificProduct = [];
+  //List<PurchaseModel> purchaseListOfSpecificProduct = [];
   List<ProductModel> productList = [];
+  List<ProductModel> filteredProductList = [];
 
 
 
@@ -30,6 +31,7 @@ class ProductProvider extends ChangeNotifier {
     DbHelper.getAllProduct().listen((event) {
       productList = List.generate(event.docs.length, (index) =>
           ProductModel.fromMap(event.docs[index].data()));
+      filteredProductList=productList;
       notifyListeners();
     });
   }
@@ -51,5 +53,26 @@ class ProductProvider extends ChangeNotifier {
     return categoryList.firstWhere((element) => element.name == name);
   }
 
+  List<String> getCategoryFilterList() {
+    return <String>[
+      'Featured',
+      'All',
+      ... categoryList.map((e) => e.name!).toList(),
+    ];
+  }
 
+  filterProductsByCategory(String category) {
+    if(category == 'Featured') {
+      filteredProductList = getFeaturedProducts();
+    } else if(category == 'All') {
+      filteredProductList =  productList;
+    } else {
+      filteredProductList = productList.where((element) => element.category == category).toList();
+    }
+    notifyListeners();
+  }
+
+  List<ProductModel> getFeaturedProducts() {
+    return productList.where((element) => element.featured == true).toList();
+  }
 }

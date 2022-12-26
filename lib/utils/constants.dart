@@ -1,5 +1,7 @@
-const String currencySymbol = '৳';
+import 'dart:ui';
 
+const String currencySymbol = '৳';
+const Color appBarColor = Color.fromARGB(255, 11, 11, 44);
 abstract class PaymentMethod {
   static const String cod = 'Cash on Delivery';
   static const String online = 'Online Payment';

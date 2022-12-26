@@ -1,16 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:online_shopping/pages/cart_page.dart';
 import 'package:online_shopping/pages/checkout_page.dart';
 import 'package:online_shopping/pages/launcher_page.dart';
 import 'package:online_shopping/pages/login_page.dart';
+import 'package:online_shopping/pages/login_page2.dart';
 import 'package:online_shopping/pages/order_successful_page.dart';
 import 'package:online_shopping/pages/product_page.dart';
+import 'package:online_shopping/pages/welcome_page.dart';
 import 'package:online_shopping/providers/card_provider.dart';
 import 'package:online_shopping/providers/order_provider.dart';
 import 'package:online_shopping/providers/product_provider.dart';
 import 'package:online_shopping/providers/user_provider.dart';
+import 'package:online_shopping/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 void main()async{
@@ -34,6 +38,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        primaryColor: appBarColor,
+        textTheme: GoogleFonts.latoTextTheme(),
+        appBarTheme: AppBarTheme(
+            backgroundColor: appBarColor,
+            iconTheme: IconThemeData(
+              color: Colors.amberAccent,
+            )
+        ),
         primarySwatch: Colors.blue,
       ),
       initialRoute: LauncherPage.routeName,
@@ -46,13 +58,13 @@ class MyApp extends StatelessWidget {
         CartPage.routeName : (context) => CartPage(),
         CheckoutPage.routeName : (context) => CheckoutPage(),
         OrderSuccessfulPage.routeName : (context) => OrderSuccessfulPage(),
-      //  OrderPage.routeName : (context) => OrderPage(),
+        WelcomePage.routeName : (context) => WelcomePage(),
+        LoginPage2.routeName : (context) => LoginPage2(),
       //  UserPage.routeName : (context) => UserPage(),
 
        // NewProductPage.routeName : (context) => NewProductPage(),
        // ProductDetailsPage.routeName : (context) => ProductDetailsPage(),
 
-//Riday
       },
     );
   }

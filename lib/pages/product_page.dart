@@ -1,23 +1,30 @@
+
 import 'package:flutter/material.dart';
-import 'package:online_shopping/customwidgets/product_item.dart';
 import 'package:online_shopping/pages/cart_page.dart';
 import 'package:provider/provider.dart';
-
+import '../customwidgets/category_list_view.dart';
 import '../customwidgets/main_drawer.dart';
+import '../customwidgets/product_item.dart';
 import '../providers/card_provider.dart';
+import '../providers/order_provider.dart';
 import '../providers/product_provider.dart';
 
 class ProductPage extends StatelessWidget {
   static const String routeName = '/product';
+
   const ProductPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Provider.of<ProductProvider>(context, listen: false).getAllProduct();
+    Provider.of<ProductProvider>(context, listen: false).getAllCategories();
     Provider.of<CartProvider>(context, listen: false).getAllCartItems();
+    Provider.of<OrderProvider>(context, listen: false).getOrderByUser();
     return Scaffold(
+      backgroundColor: Colors.red,
       drawer: MainDrawer(),
-      appBar: AppBar(
+      /*AppBar(
+        elevation: 0,
         title: const Text('Products'),
         actions: [
           InkWell(
@@ -32,14 +39,14 @@ class ProductPage extends StatelessWidget {
                     size: 30,
                   ),
                   Positioned(
-                    left: -2,
+                    right: -4,
                     top: -1,
                     child: Container(
                       width: 20,
                       height: 20,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.red, shape: BoxShape.circle),
+                      decoration: const BoxDecoration(
+                          color: Colors.grey, shape: BoxShape.circle),
                       child: FittedBox(
                         child: Consumer<CartProvider>(
                             builder: (context, provider, _) =>
@@ -52,22 +59,101 @@ class ProductPage extends StatelessWidget {
             ),
           )
         ],
-      ),
+      ),*/
       body: Consumer<ProductProvider>(
-      builder: (context, provider, _) => provider.productList.isEmpty
-    ? const Center(
-    child: Text('No item found'),
-    )
-              : GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 0.65),
-          itemCount: provider.productList.length,
-
-          itemBuilder: (context, index) {
-            final product = provider.productList[index];
-            return ProductItem(productModel: product);
-          },)
+        builder: (context, provider, _) => _buildSliverList(context, provider),
       ),
+    );
+  }
+
+  Widget _buildSliverList(BuildContext context, ProductProvider provider) {
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          pinned: true,
+          title: Text('Products'),
+          floating: true,
+          expandedHeight: 200,
+          flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.parallax,
+              background: ListView(
+                children: [
+                  const SizedBox(
+                    height: 60,
+                  ),
+                  CategoryListView(
+                    provider: provider,
+                    onSelect: (category) {
+                      provider.filterProductsByCategory(category);
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      '${provider.filteredProductList.length} item(s) found',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+          actions: [
+            InkWell(
+              onTap: () => Navigator.pushNamed(context, CartPage.routeName),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart,
+                      size: 30,
+                    ),
+                    Positioned(
+                      right: -4,
+                      top: -1,
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                            color: Colors.grey, shape: BoxShape.circle),
+                        child: FittedBox(
+                          child: Consumer<CartProvider>(
+                              builder: (context, provider, _) =>
+                                  Text('${provider.totalItemsInCart}')),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+        SliverGrid.count(
+          crossAxisCount: 2,
+          childAspectRatio: 0.65,
+          children: provider.filteredProductList
+              .map((e) => ProductItem(productModel: e))
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  GridView buildGridView(ProductProvider provider) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, childAspectRatio: 0.65),
+      itemCount: provider.productList.length,
+      itemBuilder: (context, index) {
+        final product = provider.productList[index];
+        return ProductItem(productModel: product);
+      },
     );
   }
 }

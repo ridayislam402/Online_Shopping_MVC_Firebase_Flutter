@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_shopping/pages/login_page.dart';
 import 'package:online_shopping/pages/product_page.dart';
+import 'package:online_shopping/pages/welcome_page.dart';
 
 import '../auth/auth_service.dart';
 
@@ -20,7 +21,7 @@ class _LauncherPageState extends State<LauncherPage> {
   void initState() {
     Future.delayed(Duration.zero, () {
       if(AuthService.user == null) {
-        Navigator.pushReplacementNamed(context, LoginPage.routeName);
+        Navigator.pushReplacementNamed(context, WelcomePage.routeName);
       } else {
         Navigator.pushReplacementNamed(context, ProductPage.routeName);
       }
