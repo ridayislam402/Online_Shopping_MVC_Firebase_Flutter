@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:online_shopping/pages/launcher_page.dart';
+import 'package:online_shopping/pages/order_page.dart';
+import 'package:online_shopping/utils/constants.dart';
 
 class OrderSuccessfulPage extends StatelessWidget {
   static const String routeName = '/order_successful';
@@ -8,13 +11,38 @@ class OrderSuccessfulPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBarColor,
       appBar: AppBar(
         title: const Text('Order Successful'),
       ),
       body: Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.done, size: 150,),
-          Text('Your order has been placed successfully', style: TextStyle(fontSize: 22),),
+          Icon(Icons.done, size: 150,color: Colors.white,),
+          Text('Your order has been placed successfully', style: TextStyle(fontSize: 20, color: Colors.white),),
+          SizedBox(height: 20,),
+          SizedBox(height: 45,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pushNamed(context, LauncherPage.routeName),
+                child: Text('Get Another Product',style: TextStyle(fontSize: 15),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  onPrimary: Colors.black,
+                ),
+              )
+          ),
+          SizedBox(height: 20,),
+          SizedBox(height: 50,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pushNamed(context, OrderPage.routeName),
+                child: Text('My Orders',style: TextStyle(),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  onPrimary: Colors.black,
+                ),
+              )
+          ),
+
         ],
       ),),
     );

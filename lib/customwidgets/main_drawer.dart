@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../auth/auth_service.dart';
 import '../pages/launcher_page.dart';
+import '../pages/order_page.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class MainDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              //Navigator.pushNamed(context, OrderPage.routeName);
+              Navigator.pushNamed(context, OrderPage.routeName);
             },
             leading: Icon(Icons.shopping_bag),
             title: const Text('My Orders'),

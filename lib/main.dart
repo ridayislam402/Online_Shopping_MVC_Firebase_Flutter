@@ -7,6 +7,7 @@ import 'package:online_shopping/pages/checkout_page.dart';
 import 'package:online_shopping/pages/launcher_page.dart';
 import 'package:online_shopping/pages/login_page.dart';
 import 'package:online_shopping/pages/login_page2.dart';
+import 'package:online_shopping/pages/order_page.dart';
 import 'package:online_shopping/pages/order_successful_page.dart';
 import 'package:online_shopping/pages/product_page.dart';
 import 'package:online_shopping/pages/welcome_page.dart';
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
         OrderSuccessfulPage.routeName : (context) => OrderSuccessfulPage(),
         WelcomePage.routeName : (context) => WelcomePage(),
         LoginPage2.routeName : (context) => LoginPage2(),
-      //  UserPage.routeName : (context) => UserPage(),
+        OrderPage.routeName : (context) => OrderPage(),
 
        // NewProductPage.routeName : (context) => NewProductPage(),
        // ProductDetailsPage.routeName : (context) => ProductDetailsPage(),

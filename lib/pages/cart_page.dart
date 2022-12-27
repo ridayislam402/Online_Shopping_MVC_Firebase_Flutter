@@ -13,6 +13,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBarColor,
       appBar: AppBar(
         title: Text('My Cart'),
         actions: [
@@ -66,14 +67,17 @@ class CartPage extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
-                      ElevatedButton(
-                        onPressed:
-                          provider.totalItemsInCart == 0 ?
-                          null : () => Navigator.pushNamed(context, CheckoutPage.routeName),
-
-                       // provider.totalItemsInCart == 0 ?
-                       // null : () => Navigator.pushNamed(context, CheckoutPage.routeName),
-                        child: const Text('Checkout'),
+                      SizedBox(height: 50,
+                        child: ElevatedButton(
+                          onPressed:
+                            provider.totalItemsInCart == 0 ?
+                            null : () => Navigator.pushNamed(context, CheckoutPage.routeName),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: appBarColor,
+                            onPrimary: Colors.white
+                          ),
+                          child: const Text('Checkout'),
+                        ),
                       )
                     ],
                   ),

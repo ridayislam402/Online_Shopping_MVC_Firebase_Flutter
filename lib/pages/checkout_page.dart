@@ -125,9 +125,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: _saveOrder,
-            child: const Text('Proceed to Order'),
+          SizedBox(height: 50,
+            child: ElevatedButton(
+              onPressed: _saveOrder,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: appBarColor,
+                onPrimary: Colors.white
+              ),
+              child: const Text('Proceed to Order'),
+            ),
           )
         ],
       ),

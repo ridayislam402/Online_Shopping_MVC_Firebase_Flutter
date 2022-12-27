@@ -18,7 +18,7 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent,
+      backgroundColor: appBarColor,
       appBar: AppBar(
         title: const Text('My Orders'),
       ),
