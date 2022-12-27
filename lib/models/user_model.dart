@@ -28,7 +28,7 @@ class UserModel {
       'name' : name,
       'mobile' : mobile,
       'email' : email,
-      'address' : address,
+      'address' : address!=null? address!.toMap():address,
       'image' : image,
       'deviceToken' : deviceToken,
       'userCreationTime' : userCreationTime,

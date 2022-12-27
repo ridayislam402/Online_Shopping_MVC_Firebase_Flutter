@@ -10,6 +10,8 @@ import 'package:online_shopping/pages/login_page2.dart';
 import 'package:online_shopping/pages/order_page.dart';
 import 'package:online_shopping/pages/order_successful_page.dart';
 import 'package:online_shopping/pages/product_page.dart';
+import 'package:online_shopping/pages/signup_page.dart';
+import 'package:online_shopping/pages/user_page.dart';
 import 'package:online_shopping/pages/welcome_page.dart';
 import 'package:online_shopping/providers/card_provider.dart';
 import 'package:online_shopping/providers/order_provider.dart';
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
             backgroundColor: appBarColor,
             iconTheme: IconThemeData(
-              color: Colors.amberAccent,
+              color: Colors.red,
             )
         ),
         primarySwatch: Colors.blue,
@@ -62,8 +64,11 @@ class MyApp extends StatelessWidget {
         WelcomePage.routeName : (context) => WelcomePage(),
         LoginPage2.routeName : (context) => LoginPage2(),
         OrderPage.routeName : (context) => OrderPage(),
+        SignUpPage.routeName : (context) => SignUpPage(),
+        UserPage.routeName : (context) => UserPage(),
 
-       // NewProductPage.routeName : (context) => NewProductPage(),
+
+        // NewProductPage.routeName : (context) => NewProductPage(),
        // ProductDetailsPage.routeName : (context) => ProductDetailsPage(),
 
       },

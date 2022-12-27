@@ -68,6 +68,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBarColor,
       appBar: AppBar(
         title: const Text('Checkout'),
       ),
@@ -129,8 +130,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
             child: ElevatedButton(
               onPressed: _saveOrder,
               style: ElevatedButton.styleFrom(
-                backgroundColor: appBarColor,
-                onPrimary: Colors.white
+                backgroundColor: Colors.green,
+                onPrimary: appBarColor
               ),
               child: const Text('Proceed to Order'),
             ),
@@ -242,33 +243,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                controller: addressController,
-                decoration: const InputDecoration(
-                    hintText: 'Enter delivery address',
-                    border: OutlineInputBorder()),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please provide a Street Address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: zcodeController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    hintText: 'Enter Zip Code', border: OutlineInputBorder()),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please provide a Zip Code';
-                  }
-                  return null;
-                },
-              ),
               DropdownButtonFormField<String>(
                 isExpanded: true,
                 hint: const Text('Select City '),
@@ -314,6 +288,36 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select an Area';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: addressController,
+                decoration: const InputDecoration(
+                    hintText: 'Enter delivery address',
+                    border: OutlineInputBorder()),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please provide a Street Address';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: zcodeController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    hintText: 'Enter Zip Code', border: OutlineInputBorder()),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please provide a Zip Code';
                   }
                   return null;
                 },

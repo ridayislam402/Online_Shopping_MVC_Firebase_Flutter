@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_shopping/pages/launcher_page.dart';
+import 'package:online_shopping/pages/signup_page.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/auth_service.dart';
@@ -21,6 +22,12 @@ class _LoginPage2State extends State<LoginPage2> {
   bool isObscureText = true, isLogin = true;
   final formKey = GlobalKey<FormState>();
   String errMsg = '';
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +101,13 @@ class _LoginPage2State extends State<LoginPage2> {
                       ),
 
                       SizedBox(height: 10),
-                      SizedBox(height: 50,
+                      SizedBox(height: 45,
                           width: 100,
                           child: ElevatedButton(
-                            onPressed: () => authenticate(),
+                            onPressed: () {
+                              isLogin = true;
+                            authenticate();
+                            }, //authenticate(),
                             child: Text('Login',style: TextStyle(fontSize: 20),),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -109,8 +119,9 @@ class _LoginPage2State extends State<LoginPage2> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("Don't have an Account ?",style: TextStyle(color: Colors.white),),
-                          TextButton(onPressed: () {
-
+                          TextButton(
+                              onPressed: () {
+                              Navigator.pushNamed(context, SignUpPage.routeName);
                           }, child: Text('SignUp', style: TextStyle(fontSize: 20,color: Colors.red),))
                         ],
                       )
@@ -132,7 +143,7 @@ class _LoginPage2State extends State<LoginPage2> {
           status = await AuthService.register(emailController.text, passController.text);
           if(mounted) {
             await Provider.of<UserProvider>(context, listen: false)
-                .addNewUser(AuthService.user!.uid, AuthService.user!.email!, Timestamp.fromDate(AuthService.user!.metadata.creationTime!));
+                .addNewUserlogin(AuthService.user!.uid,  AuthService.user!.email!, Timestamp.fromDate(AuthService.user!.metadata.creationTime!));
           }
         }
         if(status) {

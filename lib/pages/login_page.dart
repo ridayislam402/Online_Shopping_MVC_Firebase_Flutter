@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () {
                   isLogin = true;
-                  authenticate();
+                 // authenticate();
                 },
                 child: const Text('LOGIN'),
               ),
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     onPressed: () {
                       isLogin = false;
-                      authenticate();
+                      //authenticate();
                     },
                     child: const Text('Register Here'),
                   ),
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  authenticate() async {
+  /*authenticate() async {
     if(formKey.currentState!.validate()) {
       bool status;
       try {
@@ -146,5 +146,5 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
-  }
+  }*/
 }

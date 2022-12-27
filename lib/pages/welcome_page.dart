@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_shopping/pages/login_page2.dart';
+import 'package:online_shopping/pages/signup_page.dart';
 import 'package:online_shopping/utils/constants.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -25,7 +26,7 @@ class WelcomePage extends StatelessWidget {
                 children: [
                   const Text('Welcome', style: TextStyle(fontSize: 40, color: Colors.white)),
                   const SizedBox(height : 50,),
-                  SvgPicture.asset('images/chat.svg',height: 320,),
+                  SvgPicture.asset('images/signup.svg',height: 320,),
                   const SizedBox(height: 10,),
 
 
@@ -41,7 +42,7 @@ class WelcomePage extends StatelessWidget {
                           onPrimary: Colors.black,
                         ),)),
                   SizedBox(height: 15),
-                  SizedBox(height: 50,
+                  SizedBox(height: 45,
                       width: 100,
                       child: ElevatedButton(
                         onPressed:() {
@@ -56,7 +57,7 @@ class WelcomePage extends StatelessWidget {
                   SizedBox(height: 40,
                       child: ElevatedButton(
                         onPressed:() {
-
+                          Navigator.pushNamed(context, SignUpPage.routeName);
                         },
                         child: Text('SignUp'),
                         style: ElevatedButton.styleFrom(
@@ -70,4 +71,5 @@ class WelcomePage extends StatelessWidget {
           ],)
     );
   }
+
 }
