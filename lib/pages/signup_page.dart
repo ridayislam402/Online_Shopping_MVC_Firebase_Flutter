@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:online_shopping/models/address_model.dart';
 import 'package:online_shopping/utils/constants.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,10 @@ class _SignUpPageState extends State<SignUpPage> {
   void dispose() {
     emailController.dispose();
     passController.dispose();
+    nameController.dispose();
+    mobileController.dispose();
+    addressController.dispose();
+    zcodeController.dispose();
     super.dispose();
   }
 
@@ -279,6 +284,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
   authenticate() async {
     if(formKey.currentState!.validate()) {
+      EasyLoading.show(status: 'Please wait');
       bool status;
       try {
         if(isLogin) {
@@ -286,17 +292,21 @@ class _SignUpPageState extends State<SignUpPage> {
         } else {
           status = await AuthService.register(emailController.text, passController.text);
           if(mounted) {
+
             if(isVisible){
               final addresss= AddressModel(streetAddress: addressController.text, area: area!, city: city!, zipCode: zcodeController.text);
               await Provider.of<UserProvider>(context, listen: false)
                   .addNewUser(AuthService.user!.uid, nameController.text, mobileController.text,addresss, AuthService.user!.email!, Timestamp.fromDate(AuthService.user!.metadata.creationTime!));
+            }else{
+              await Provider.of<UserProvider>(context, listen: false)
+                  .addNewUserlogin(AuthService.user!.uid,  AuthService.user!.email!, Timestamp.fromDate(AuthService.user!.metadata.creationTime!));
             }
-
           }
         }
         if(status) {
           if(mounted) {
          //  await addressm();
+            EasyLoading.dismiss();
             Navigator.pushReplacementNamed(context, LauncherPage.routeName);
           }
         } else {

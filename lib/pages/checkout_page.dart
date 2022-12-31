@@ -32,6 +32,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
   String? city, area;
   final addressController = TextEditingController();
   final zcodeController = TextEditingController();
+  final nameController = TextEditingController();
+  final mobileController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   UserModel? userModel;
 
@@ -62,6 +65,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
   void dispose() {
     addressController.dispose();
     zcodeController.dispose();
+    nameController.dispose();
+    mobileController.dispose();
     super.dispose();
   }
 
@@ -81,7 +86,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               children: [
                 Text(
                   'Product Info',
-                  style: Theme.of(context).textTheme.headline6,
+                  style: TextStyle(fontSize: 20,color: Colors.white)
                 ),
                 const SizedBox(
                   height: 10,
@@ -92,7 +97,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 Text(
                   'Payment Info',
-                  style: Theme.of(context).textTheme.headline6,
+                    style: TextStyle(fontSize: 20,color: Colors.white)
                 ),
                 const SizedBox(
                   height: 10,
@@ -103,18 +108,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 Text(
                   'Delivery Address',
-                  style: Theme.of(context).textTheme.headline6,
+                    style: TextStyle(fontSize: 20,color: Colors.white)
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                if (userModel != null) buildAddressSection(),
+                if (userModel != null)
+                  buildAddressSection(),
                 const SizedBox(
                   height: 10,
                 ),
                 Text(
                   'Payment Method',
-                  style: Theme.of(context).textTheme.headline6,
+                    style: TextStyle(fontSize: 20,color: Colors.white)
                 ),
                 const SizedBox(
                   height: 10,
@@ -181,7 +187,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return Card(
       elevation: 5,
       child: Column(
-        children: cartProvider.cartList
+        children: cartProvider.checkout
             .map((cartM) => ListTile(
           dense: true,
           title: Text(cartM.productName!),
@@ -199,18 +205,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
         children: [
           ListTile(
             title: const Text('Subtotal'),
-            trailing: Text('$currencySymbol${cartProvider.getCartSubtotal()}'),
+            trailing: Text('$currencySymbol${cartProvider.getCheckoutSubtotal()}'),
           ),
           ListTile(
             title: Text(
                 'Discount(${orderProvider.orderConstantsModel.discount})%'),
             trailing: Text(
-                '$currencySymbol${orderProvider.getDiscountAmount(cartProvider.getCartSubtotal())}'),
+                '$currencySymbol${orderProvider.getDiscountAmount(cartProvider.getCheckoutSubtotal())}'),
           ),
           ListTile(
             title: Text('VAT(${orderProvider.orderConstantsModel.vat})%'),
             trailing: Text(
-                '$currencySymbol${orderProvider.getVatAmount(cartProvider.getCartSubtotal())}'),
+                '$currencySymbol${orderProvider.getVatAmount(cartProvider.getCheckoutSubtotal())}'),
           ),
           ListTile(
             title: const Text('Delivery Charge'),
@@ -224,7 +230,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ListTile(
             title: const Text('Grand Total'),
             trailing: Text(
-              '$currencySymbol${orderProvider.getGrandTotal(cartProvider.getCartSubtotal())}',
+              '$currencySymbol${orderProvider.getGrandTotal(cartProvider.getCheckoutSubtotal())}',
               style: const TextStyle(
                 fontSize: 18,
               ),
@@ -292,6 +298,36 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   return null;
                 },
               ),
+              /*const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                    hintText: 'Enter Your Name',
+                    border: OutlineInputBorder()),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please provide a Street Address';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: mobileController,
+                decoration: const InputDecoration(
+                    hintText: 'Enter Phone Number',
+                    border: OutlineInputBorder()),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please provide a Street Address';
+                  }
+                  return null;
+                },
+              ),*/
               const SizedBox(
                 height: 10,
               ),
@@ -348,12 +384,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
           month: DateTime.now().month,
           year: DateTime.now().year,
         ),
-        grandTotal: orderProvider.getGrandTotal(cartProvider.getCartSubtotal()),
+        grandTotal: orderProvider.getGrandTotal(cartProvider.getCheckoutSubtotal()),
         discount: orderProvider.orderConstantsModel.discount,
         vat: orderProvider.orderConstantsModel.vat,
         deliveryCharge: orderProvider.orderConstantsModel.deliveryCharge,
       );
-      orderProvider.addNewOrder(orderM, cartProvider.cartList).then((value) {
+      orderProvider.addNewOrder(orderM, cartProvider.checkout).then((value) {
         EasyLoading.dismiss();
         Navigator.pushNamedAndRemoveUntil(
             context,
@@ -362,6 +398,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }).catchError((error) {
         EasyLoading.dismiss();
       });
+      cartProvider.clearCart();
     }
   }
 }

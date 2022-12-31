@@ -62,7 +62,7 @@ class CartPage extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Subtotal: $currencySymbol${provider.getCartSubtotal()}',
+                        'Subtotal: $currencySymbol${provider.getCheckoutSubtotal()}',
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -70,7 +70,7 @@ class CartPage extends StatelessWidget {
                       SizedBox(height: 50,
                         child: ElevatedButton(
                           onPressed:
-                            provider.totalItemsInCart == 0 ?
+                            provider.totalItemsInCheckout == 0 ?
                             null : () => Navigator.pushNamed(context, CheckoutPage.routeName),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: appBarColor,

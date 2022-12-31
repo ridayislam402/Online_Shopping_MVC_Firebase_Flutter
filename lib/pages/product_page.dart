@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:online_shopping/auth/auth_service.dart';
 import 'package:online_shopping/pages/cart_page.dart';
 import 'package:provider/provider.dart';
 import '../customwidgets/category_list_view.dart';
@@ -18,8 +19,10 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<ProductProvider>(context, listen: false).getAllProduct();
     Provider.of<ProductProvider>(context, listen: false).getAllCategories();
-    Provider.of<CartProvider>(context, listen: false).getAllCartItems();
-    Provider.of<OrderProvider>(context, listen: false).getOrderByUser();
+    AuthService.user==null?null:Provider.of<CartProvider>(context, listen: false).getAllCartItems();
+    AuthService.user==null?null:Provider.of<OrderProvider>(context, listen: false).getOrderByUser();
+    AuthService.user==null?null:Provider.of<CartProvider>(context, listen: false).getAllCheckoutItems();
+
     return Scaffold(
       backgroundColor: Colors.red,
       drawer: MainDrawer(),
@@ -73,7 +76,7 @@ class ProductPage extends StatelessWidget {
           pinned: true,
           title: Text('Products'),
           floating: true,
-          expandedHeight: 200,
+          expandedHeight: 170,
           flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
               background: ListView(
@@ -102,7 +105,10 @@ class ProductPage extends StatelessWidget {
               )),
           actions: [
             InkWell(
-              onTap: () => Navigator.pushNamed(context, CartPage.routeName),
+              onTap: () {
+                Provider.of<CartProvider>(context,listen: false).clearCheckout();
+                Navigator.pushNamed(context, CartPage.routeName);
+              },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Stack(

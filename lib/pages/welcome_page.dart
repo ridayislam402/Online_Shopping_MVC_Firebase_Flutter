@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_shopping/pages/login_page2.dart';
+import 'package:online_shopping/pages/product_page.dart';
 import 'package:online_shopping/pages/signup_page.dart';
+import 'package:online_shopping/providers/product_provider.dart';
 import 'package:online_shopping/utils/constants.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -32,15 +34,18 @@ class WelcomePage extends StatelessWidget {
 
                   SizedBox(height: 10),
                   SizedBox(height: 40,
+
                       child: ElevatedButton(
                         onPressed:() {
-
+                      Navigator.pushNamed(context, ProductPage.routeName);
                         },
                         child: Text('Skip',),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           onPrimary: Colors.black,
-                        ),)),
+                        ),
+                      )
+                  ),
                   SizedBox(height: 15),
                   SizedBox(height: 45,
                       width: 100,

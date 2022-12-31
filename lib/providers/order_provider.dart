@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:online_shopping/models/checkout_model.dart';
 
 import '../auth/auth_service.dart';
 import '../db/db_helper.dart';
@@ -57,10 +58,11 @@ class OrderProvider extends ChangeNotifier{
         + getVatAmount(subtotal) + orderConstantsModel.deliveryCharge;
   }
 
-  Future<void> addNewOrder(OrderModel orderModel, List<CartModel> cartList) async {
-    await DbHelper.addOrder(orderModel, cartList);
-    return DbHelper.clearCartItems(orderModel.userId!, cartList);
+  Future<void> addNewOrder(OrderModel orderModel, List<CheckoutModel> checkoutlist) async {
+    await DbHelper.addOrder(orderModel, checkoutlist);
+    return DbHelper.clearCheckoutItems(orderModel.userId!, checkoutlist);
   }
+
 
 
 }

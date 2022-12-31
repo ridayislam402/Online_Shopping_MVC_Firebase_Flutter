@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:online_shopping/pages/login_page2.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/auth_service.dart';
@@ -24,7 +25,8 @@ class _ProductItemState extends State<ProductItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(
+
+        if (widget.productModel.stock != 0) Navigator.pushNamed(
           context,
           ProductDetailsPage.routeName,
           arguments: widget.productModel.id,
@@ -36,8 +38,9 @@ class _ProductItemState extends State<ProductItem> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.network(
-                widget.productModel.imageUrl,
+              child: FadeInImage.assetNetwork(
+                placeholder: 'images/placeholder.png',
+                image: widget.productModel.imageUrl,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -108,23 +111,28 @@ class _ProductItemState extends State<ProductItem> {
                     color: Colors.amberAccent,
                   ),
                   onPressed: () {
-                    if (AuthService.user!.isAnonymous) {
-                      showMsg(context, 'Sign In before you add items to Cart');
-                      return;
+                    if(AuthService.user == null){
+                      Navigator.pushNamed(context, LoginPage2.routeName);
+                    }else{
+                      if (AuthService.user!.isAnonymous) {
+                        showMsg(context, 'Sign In before you add items to Cart');
+                        return;
+                      }
+                      if (isInCart) {
+                        provider.removeFromCart(widget.productModel.id!);
+                      } else {
+                        final cartModel = CartModel(
+                          productId: widget.productModel.id,
+                          productName: widget.productModel.name,
+                          salePrice: widget.productModel.salesPrice,
+                          imageUrl: widget.productModel.imageUrl,
+                          stock: widget.productModel.stock,
+                          category: widget.productModel.category,
+                        );
+                        provider.addToCart(cartModel);
+                      }
                     }
-                    if (isInCart) {
-                      provider.removeFromCart(widget.productModel.id!);
-                    } else {
-                      final cartModel = CartModel(
-                        productId: widget.productModel.id,
-                        productName: widget.productModel.name,
-                        salePrice: widget.productModel.salesPrice,
-                        imageUrl: widget.productModel.imageUrl,
-                        stock: widget.productModel.stock,
-                        category: widget.productModel.category,
-                      );
-                      provider.addToCart(cartModel);
-                    }
+
                   },
                   label: Text(isInCart ? 'Remove' : 'Add'),
                 );
