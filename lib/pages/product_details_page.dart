@@ -5,7 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:online_shopping/auth/auth_service.dart';
 import 'package:online_shopping/pages/login_page2.dart';
-import 'package:online_shopping/pages/search_page2.dart';
+import 'package:online_shopping/pages/search_page.dart';
 import 'package:online_shopping/providers/card_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -39,10 +39,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         actions: [
           IconButton(
               onPressed: () {
-                // provider
-                //provider.filteredProductList.map((e) => SearchScreen(productModel: e,)).toList();
-                Navigator.pushNamed(context, SearchScreen.routeName);
-                // showSearch(context: context, delegate: SearchPage3());
+                 showSearch(context: context, delegate: SearchPage4());
               }, icon: Icon(Icons.search,size: 30,)),
 
          // SizedBox(height: 5,),
