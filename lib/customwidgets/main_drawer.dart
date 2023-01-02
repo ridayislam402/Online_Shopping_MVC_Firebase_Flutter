@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_shopping/pages/login_page2.dart';
 
 import '../auth/auth_service.dart';
 import '../pages/launcher_page.dart';
@@ -34,8 +35,8 @@ class MainDrawer extends StatelessWidget {
           ListTile(
             onTap: () {
               AuthService.logout().then((value) =>
-                  Navigator.pushReplacementNamed(
-                      context, LauncherPage.routeName));
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, LoginPage2.routeName, ModalRoute.withName(LoginPage2.routeName)));
             },
             leading: const Icon(Icons.logout),
             title: const Text('LOGOUT'),

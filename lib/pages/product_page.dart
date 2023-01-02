@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:online_shopping/auth/auth_service.dart';
 import 'package:online_shopping/pages/cart_page.dart';
+import 'package:online_shopping/pages/search_page.dart';
+import 'package:online_shopping/pages/search_page2.dart';
+import 'package:online_shopping/pages/search_page3.dart';
+import 'package:online_shopping/pages/search_page4.dart';
 import 'package:provider/provider.dart';
 import '../customwidgets/category_list_view.dart';
 import '../customwidgets/main_drawer.dart';
@@ -10,10 +14,18 @@ import '../providers/card_provider.dart';
 import '../providers/order_provider.dart';
 import '../providers/product_provider.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   static const String routeName = '/product';
 
   const ProductPage({Key? key}) : super(key: key);
+
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  List<Map<String, dynamic>> _foundUsers = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +116,15 @@ class ProductPage extends StatelessWidget {
                 ],
               )),
           actions: [
+            IconButton(
+                onPressed: () {
+                  // provider
+                  //provider.filteredProductList.map((e) => SearchScreen(productModel: e,)).toList();
+                //  Navigator.pushNamed(context, SearchScreen.routeName);
+                   showSearch(context: context, delegate: SearchPage4());
+                }, icon: Icon(Icons.search,size: 30,)),
+
+            // SizedBox(height: 5,),
             InkWell(
               onTap: () {
                 Provider.of<CartProvider>(context,listen: false).clearCheckout();
@@ -114,6 +135,7 @@ class ProductPage extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
+
                     Icon(
                       Icons.shopping_cart,
                       size: 30,
@@ -133,11 +155,14 @@ class ProductPage extends StatelessWidget {
                                   Text('${provider.totalItemsInCart}')),
                         ),
                       ),
-                    )
+                    ),
+
                   ],
                 ),
               ),
-            )
+            ),
+            SizedBox(width: 10,),
+
           ],
         ),
         SliverGrid.count(

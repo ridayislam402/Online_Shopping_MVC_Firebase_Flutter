@@ -47,10 +47,10 @@ class _LoginPage2State extends State<LoginPage2> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20,),
-                      const Text('Login', style: TextStyle(fontSize: 40, color: Colors.white)),
-                      const SizedBox(height : 50,),
-                      SvgPicture.asset('images/login.svg',height: 320,),
+                      SizedBox(height: 40,),
+                      const Text('Please Login First', style: TextStyle(fontSize: 30, color: Colors.white)),
+                      const SizedBox(height : 40,),
+                      SvgPicture.asset('images/signup.svg',height: 320,),
                       const SizedBox(height: 10,),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),

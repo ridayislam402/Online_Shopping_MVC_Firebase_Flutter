@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:online_shopping/auth/auth_service.dart';
 import 'package:online_shopping/pages/login_page2.dart';
+import 'package:online_shopping/pages/search_page2.dart';
 import 'package:online_shopping/providers/card_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ import '../models/product_model.dart';
 import '../providers/product_provider.dart';
 import '../utils/constants.dart';
 import '../utils/helper_functions.dart';
+import 'cart_page.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   static const String routeName = '/product_details';
@@ -34,6 +36,55 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       backgroundColor: appBarColor,
       appBar: AppBar(
         title: const Text('Product Details'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                // provider
+                //provider.filteredProductList.map((e) => SearchScreen(productModel: e,)).toList();
+                Navigator.pushNamed(context, SearchScreen.routeName);
+                // showSearch(context: context, delegate: SearchPage3());
+              }, icon: Icon(Icons.search,size: 30,)),
+
+         // SizedBox(height: 5,),
+          InkWell(
+            onTap: () {
+              Provider.of<CartProvider>(context,listen: false).clearCheckout();
+              Navigator.pushNamed(context, CartPage.routeName);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+
+                  Icon(
+                    Icons.shopping_cart,
+                    size: 30,
+                  ),
+                  Positioned(
+                    right: -4,
+                    top: -1,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                          color: Colors.grey, shape: BoxShape.circle),
+                      child: FittedBox(
+                        child: Consumer<CartProvider>(
+                            builder: (context, provider, _) =>
+                                Text('${provider.totalItemsInCart}')),
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+          SizedBox(width: 10,),
+
+        ],
       ),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: provider.getProductById(pid),
@@ -42,76 +93,95 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           if(snapshot.hasData) {
             final product = ProductModel.fromMap(snapshot.data!.data()!);
             final isInCart = cartprovider.isInCart(product.id!);
-            return ListView(
+            return Column(
               children: [
-                FadeInImage.assetNetwork(
-                  placeholder: 'images/placeholder.png',
-                  image: product.imageUrl,
-                  fadeInCurve: Curves.bounceInOut,
-                  fadeInDuration: const Duration(seconds: 3),
-                  width: double.infinity,
-                  height: 300,
-                  fit: BoxFit.cover,
-                ),
-                ListTile(
-                  title: Text(product.name, style: TextStyle(fontSize: 20,color: Colors.white)),
-                ),
-                ListTile(
-                  title: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
-                ),
-                ListTile(
-                  title: Text('Product Description', style: TextStyle(fontSize: 20,color: Colors.white),),
-                  subtitle: Text(product.description ?? 'Not Available',style: TextStyle(color: Colors.white)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Card(
-                    elevation: 7,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text('Rate this Product', style: TextStyle(fontSize: 20),),
-                          RatingBar.builder(
-                            initialRating: rating,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: appBarColor,
-                            ),
-                            onRatingUpdate: (value) {
-                              rating = value;
-                            },
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: appBarColor,
-                            ),
-                            onPressed: () async {
-                              if(AuthService.user == null){
-                                Navigator.pushNamed(context, LoginPage2.routeName);
-                              }else{
-                                EasyLoading.show(status: 'Please wait');
-                                await provider.rateProduct(pid, rating);
-                                showMsg(context, 'Thanks for your rating');
-                                EasyLoading.dismiss();
-                              }
-
-                            },
-                            child: const Text('Submit'),
-                          ),
-
-                        ],
-                      ),
+                if (product.stock == 0)
+                  Container(
+                    alignment: Alignment.center,
+                    color: Colors.grey.withOpacity(0.5),
+                    child: const Text(
+                      'Out of Stock',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      FadeInImage.assetNetwork(
+                        placeholder: 'images/placeholder.png',
+                        image: product.imageUrl,
+                        fadeInCurve: Curves.bounceInOut,
+                        fadeInDuration: const Duration(seconds: 3),
+                        width: double.infinity,
+                        height: 300,
+                        fit: BoxFit.cover,
+                      ),
+                      ListTile(
+                        title: Text(product.name, style: TextStyle(fontSize: 20,color: Colors.white)),
+                      ),
+                      ListTile(
+                        title: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
+                      ),
+                      ListTile(
+                        title: Text('Product Description', style: TextStyle(fontSize: 20,color: Colors.white),),
+                        subtitle: Text(product.description ?? 'Not Available',style: TextStyle(color: Colors.white)),
+                      ),
+                      if (product.stock != 0)Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Card(
+                          elevation: 7,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('Rate this Product', style: TextStyle(fontSize: 20),),
+                                RatingBar.builder(
+                                  initialRating: rating,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: appBarColor,
+                                  ),
+                                  onRatingUpdate: (value) {
+                                    rating = value;
+                                  },
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: appBarColor,
+                                  ),
+                                  onPressed: () async {
+                                    if(AuthService.user == null){
+                                      Navigator.pushNamed(context, LoginPage2.routeName);
+                                    }else{
+                                      EasyLoading.show(status: 'Please wait');
+                                      await provider.rateProduct(pid, rating);
+                                      showMsg(context, 'Thanks for your rating');
+                                      EasyLoading.dismiss();
+                                    }
+
+                                  },
+                                  child: const Text('Submit'),
+                                ),
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 50,
+
+                if (product.stock != 0) SizedBox(height: 50,
                   child: ElevatedButton(
 
                     onPressed: () {
@@ -147,7 +217,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     child: Text(isInCart ? 'Remove from Cart' : 'Add to Cart', style: TextStyle(color: Colors.white,fontSize: 15),),
                   ),
-                )
+                ),
               ],
             );
           }

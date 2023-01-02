@@ -39,6 +39,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
 
+
   Future<String> uploadImage(String path) async {
     final imageName = DateTime
         .now()
@@ -103,5 +104,6 @@ class ProductProvider extends ChangeNotifier {
     return DbHelper.updateProduct(productId, {productRating : avgRating});
   }
 
-
+  Stream<QuerySnapshot<Map<String, dynamic>>> getProductByName(String name) =>
+      DbHelper.getProductByName(name);
 }

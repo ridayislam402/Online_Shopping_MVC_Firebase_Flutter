@@ -21,7 +21,7 @@ class _LauncherPageState extends State<LauncherPage> {
   void initState() {
     Future.delayed(Duration.zero, () {
       if(AuthService.user == null) {
-        Navigator.pushReplacementNamed(context, WelcomePage.routeName);
+        Navigator.pushReplacementNamed(context, ProductPage.routeName);
       } else {
         Navigator.pushReplacementNamed(context, ProductPage.routeName);
       }

@@ -11,6 +11,8 @@ import 'package:online_shopping/pages/order_page.dart';
 import 'package:online_shopping/pages/order_successful_page.dart';
 import 'package:online_shopping/pages/product_details_page.dart';
 import 'package:online_shopping/pages/product_page.dart';
+import 'package:online_shopping/pages/search_page.dart';
+import 'package:online_shopping/pages/search_page2.dart';
 import 'package:online_shopping/pages/signup_page.dart';
 import 'package:online_shopping/pages/user_page.dart';
 import 'package:online_shopping/pages/welcome_page.dart';
@@ -68,6 +70,10 @@ class MyApp extends StatelessWidget {
         SignUpPage.routeName : (context) => SignUpPage(),
         UserPage.routeName : (context) => UserPage(),
         ProductDetailsPage.routeName : (context) => ProductDetailsPage(),
+        SearchPage.routeName : (context) => SearchPage(),
+        SearchScreen.routeName : (context) => SearchScreen(),
+
+
 
 
         // NewProductPage.routeName : (context) => NewProductPage(),

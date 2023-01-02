@@ -192,4 +192,6 @@ class DbHelper {
         .update(map);
   }
 
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getProductByName(String name) =>
+      _db.collection(collectionProduct).where("name",isGreaterThanOrEqualTo: name).snapshots();
 }

@@ -139,7 +139,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 backgroundColor: Colors.green,
                 onPrimary: appBarColor
               ),
-              child: const Text('Proceed to Order'),
+              child: const Text('Proceed to Order Conform',style: TextStyle(color: Colors.white,fontSize: 16),),
             ),
           )
         ],
