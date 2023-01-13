@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:online_shopping/models/address_model.dart';
+import 'package:online_shopping/models/user_model_only_nm.dart';
 
 import '../auth/auth_service.dart';
 import '../db/db_helper.dart';
@@ -26,6 +27,8 @@ class UserProvider extends ChangeNotifier{
     );
     return DbHelper.addUser(userr);
   }
+
+
 
   Future<UserModel> getUserByUid() async {
     final snapshot = await DbHelper.getUserOnce(AuthService.user!.uid);

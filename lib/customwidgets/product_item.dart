@@ -38,11 +38,14 @@ class _ProductItemState extends State<ProductItem> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: FadeInImage.assetNetwork(
-                placeholder: 'images/placeholder.png',
-                image: widget.productModel.imageUrl,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: Key(widget.productModel.id.toString()),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'images/placeholder.png',
+                  image: widget.productModel.imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Positioned(
@@ -112,7 +115,8 @@ class _ProductItemState extends State<ProductItem> {
                   ),
                   onPressed: () {
                     if(AuthService.user == null){
-                      Navigator.pushNamed(context, LoginPage2.routeName);
+                      showbackDialog(context: context);
+                      //Navigator.pushNamed(context, LoginPage2.routeName);
                     }else{
                       if (AuthService.user!.isAnonymous) {
                         showMsg(context, 'Sign In before you add items to Cart');

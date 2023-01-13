@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:online_shopping/models/address_model.dart';
+import 'package:online_shopping/pages/login_page2.dart';
 import 'package:online_shopping/utils/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -63,13 +64,35 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'Email Address',
-                    prefixIcon: const Icon(Icons.email),
-
-                  ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                      fillColor: Colors.white,
+                      hintText: 'Email ....',
+                      prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                      filled: true),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
                       return 'This field must not be empty';
@@ -85,19 +108,43 @@ class _SignUpPageState extends State<SignUpPage> {
                   obscureText: isObscureText,
                   controller: passController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'Password',
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                          isObscureText ? Icons.visibility_off : Icons.visibility),
-                      onPressed: () => setState(() {
-                        isObscureText = !isObscureText;
-                      }),
-                    ),
-                  ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:  BorderSide(
+                              color: Colors.white60
+                          )
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                      //  prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                            isObscureText ? Icons.visibility_off : Icons.visibility),
+                        onPressed: () => setState(() {
+                          isObscureText = !isObscureText;
+                        }),
+                      ),
+                      fillColor: Colors.white,
+                      hintText: 'password ....',
+                      prefixIcon: Icon(Icons.vpn_key_sharp,color: Colors.black,),
+                      filled: true),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
                       return 'This field must not be empty';
@@ -111,7 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   isVisible = !isVisible;
                 },);
 
-              }, child: Text('Please Add Your Information',style: TextStyle(fontSize: 15,color: Colors.blue,decoration: TextDecoration.underline),)),
+              }, child: Text('Please Add Your Information',style: TextStyle(fontSize: 15,color: Colors.green,decoration: TextDecoration.underline),)),
               Visibility(
                 visible: isVisible,
                 child: Column(
@@ -120,9 +167,35 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: DropdownButtonFormField<String>(
                         decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                             fillColor: Colors.white,
-                            filled: true
-                        ),
+                            //hintText: 'Email ....',
+                            // prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                            filled: true),
                         isExpanded: true,
                         hint: const Text('Select City '),
                         value: city,
@@ -153,9 +226,35 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: DropdownButtonFormField<String>(
                         decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                             fillColor: Colors.white,
-                            filled: true
-                        ),
+                            //hintText: 'Email ....',
+                            // prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                            filled: true),
                         isExpanded: true,
                         hint: const Text('Select Area '),
                         value: area,
@@ -185,11 +284,36 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: TextFormField(
                         controller: nameController,
                         decoration: InputDecoration(
-                          hintText: 'Enter Your Name',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                            fillColor: Colors.white,
+                            hintText: 'Enter Your Name',
+                            // prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                            filled: true),
+
                         /*validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please provide a Name';
@@ -204,11 +328,35 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: TextFormField(
                         controller: mobileController,
                         decoration: InputDecoration(
-                          hintText: 'Enter Your Number',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                            fillColor: Colors.white,
+                            hintText: 'Enter Your Number',
+                            // prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                            filled: true),
                         /*validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please provide a Mobile Number';
@@ -223,11 +371,36 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: TextFormField(
                         controller: addressController,
                         decoration: InputDecoration(
-                          hintText: 'Enter delivery address',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                            fillColor: Colors.white,
+                            hintText: 'Enter Delivery Address',
+                            // prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                            filled: true),
+
                         /*validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please provide a Street Address';
@@ -243,10 +416,35 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: zcodeController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                            filled: true,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide:  BorderSide(
+                                    color: Colors.white60
+                                )
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                             fillColor: Colors.white,
-                            hintText: 'Enter Zip Code', ),
+                            hintText: 'Enter Zip Code',
+                            // prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                            filled: true),
                         /*validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please provide a Zip Code';
@@ -260,22 +458,35 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               SizedBox(height: 20,),
-              SizedBox(height: 50,
-                child: ElevatedButton(
-                  onPressed:
-                      () {
-                        isLogin = false;
-                        authenticate();
+              Material(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                child: InkWell(
+                  onTap: () {
+                    isLogin = false;
+                    authenticate();
                   },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      onPrimary: Colors.black,
+                  borderRadius: BorderRadius.circular(30),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 28),
+                    child: Text('Register',style: TextStyle(color: appBarColor,fontSize: 16),),
                   ),
-                  child: const Text('SignUp'),
+
+
                 ),
               ),
               SizedBox(height: 20,),
-
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Aleady have an Account ?",style: TextStyle(color: Colors.white),),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, LoginPage2.routeName);
+                      }, child: Text('Login', style: TextStyle(fontSize: 20,color: Colors.green),))
+                ],
+              )
             ],
           ),
         ),
@@ -284,6 +495,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
   authenticate() async {
     if(formKey.currentState!.validate()) {
+
       EasyLoading.show(status: 'Please wait');
       bool status;
       try {
@@ -292,7 +504,6 @@ class _SignUpPageState extends State<SignUpPage> {
         } else {
           status = await AuthService.register(emailController.text, passController.text);
           if(mounted) {
-
             if(isVisible){
               final addresss= AddressModel(streetAddress: addressController.text, area: area!, city: city!, zipCode: zcodeController.text);
               await Provider.of<UserProvider>(context, listen: false)

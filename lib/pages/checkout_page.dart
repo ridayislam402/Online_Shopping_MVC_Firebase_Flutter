@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:online_shopping/models/user_model_only_nm.dart';
 import 'package:online_shopping/pages/product_page.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_service.dart';
@@ -49,6 +50,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
         setState(() {
           userModel = value;
           if (userModel!.address != null) {
+            nameController.text = userModel!.name!;
+            mobileController.text = userModel!.mobile!;
             addressController.text = userModel!.address!.streetAddress;
             zcodeController.text = userModel!.address!.zipCode;
             city = userModel!.address!.city;
@@ -242,124 +245,324 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Widget buildAddressSection() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              DropdownButtonFormField<String>(
-                isExpanded: true,
-                hint: const Text('Select City '),
-                value: city,
-                items: cityArea.keys
-                    .toList()
-                    .map((c) => DropdownMenuItem<String>(
-                  value: c,
-                  child: Text(c),
-                ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    city = value;
-                    area = null;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a City';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              DropdownButtonFormField<String>(
-                isExpanded: true,
-                hint: const Text('Select Area '),
-                value: area,
-                items: cityArea[city]
-                    ?.map((a) => DropdownMenuItem<String>(
-                  value: a,
-                  child: Text(a),
-                ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    area = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select an Area';
-                  }
-                  return null;
-                },
-              ),
-              /*const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                    hintText: 'Enter Your Name',
-                    border: OutlineInputBorder()),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please provide a Street Address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: mobileController,
-                decoration: const InputDecoration(
-                    hintText: 'Enter Phone Number',
-                    border: OutlineInputBorder()),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please provide a Street Address';
-                  }
-                  return null;
-                },
-              ),*/
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: addressController,
-                decoration: const InputDecoration(
-                    hintText: 'Enter delivery address',
-                    border: OutlineInputBorder()),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please provide a Street Address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: zcodeController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    hintText: 'Enter Zip Code', border: OutlineInputBorder()),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please provide a Zip Code';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            DropdownButtonFormField<String>(
+              isExpanded: true,
+              hint: const Text('Select City '),
+              value: city,
+              items: cityArea.keys
+                  .toList()
+                  .map((c) => DropdownMenuItem<String>(
+                value: c,
+                child: Text(c),
+              ))
+                  .toList(),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  fillColor: Colors.white,
+                 // hintText: 'Email ....',
+                //  prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                  filled: true),
+              onChanged: (value) {
+                setState(() {
+                  city = value;
+                  area = null;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a City';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            DropdownButtonFormField<String>(
+              isExpanded: true,
+              hint: const Text('Select Area '),
+              value: area,
+              items: cityArea[city]
+                  ?.map((a) => DropdownMenuItem<String>(
+                value: a,
+                child: Text(a),
+              ))
+                  .toList(),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  fillColor: Colors.white,
+                  // hintText: 'Email ....',
+                  //  prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                  filled: true),
+              onChanged: (value) {
+                setState(() {
+                  area = value;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select an Area';
+                }
+                return null;
+              },
+            ),
+            /*const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                  hintText: 'Enter Your Name',
+                  border: OutlineInputBorder()),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please provide a Street Address';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: mobileController,
+              decoration: const InputDecoration(
+                  hintText: 'Enter Phone Number',
+                  border: OutlineInputBorder()),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please provide a Street Address';
+                }
+                return null;
+              },
+            ),*/
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: nameController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  fillColor: Colors.white,
+                  hintText: 'Enter Name',
+                  //  prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                  filled: true),
+
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please provide your Name';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: mobileController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide:  BorderSide(
+                          color: Colors.white60
+                      )
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  fillColor: Colors.white,
+                  hintText: 'Enter Phone Number',
+                  //  prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                  filled: true),
+
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please provide your Phone Number';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: addressController,
+              decoration: InputDecoration(
+            border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+          borderSide:  BorderSide(
+              color: Colors.white60
+          )
+      ),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide:  BorderSide(
+                color: Colors.white60
+            )
+        ),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide:  BorderSide(
+                color: Colors.white60
+            )
+        ),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide:  BorderSide(
+                color: Colors.white60
+            )
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        fillColor: Colors.white,
+         hintText: 'Enter delivery address',
+        //  prefixIcon: const Icon(Icons.email,color: Colors.black,),
+        filled: true),
+
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please provide a Street Address';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: zcodeController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+            border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+          borderSide:  BorderSide(
+              color: Colors.white60
+          )
+      ),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide:  BorderSide(
+                color: Colors.white60
+            )
+        ),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide:  BorderSide(
+                color: Colors.white60
+            )
+        ),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide:  BorderSide(
+                color: Colors.white60
+            )
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        fillColor: Colors.white,
+        hintText: 'Enter Zip Code',
+        //  prefixIcon: const Icon(Icons.email,color: Colors.black,),
+        filled: true),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please provide a Zip Code';
+                }
+                return null;
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -389,7 +592,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
         vat: orderProvider.orderConstantsModel.vat,
         deliveryCharge: orderProvider.orderConstantsModel.deliveryCharge,
       );
-      orderProvider.addNewOrder(orderM, cartProvider.checkout).then((value) {
+      final nameMobile = UserModel_only_namemobile(
+          uid: AuthService.user!.uid,
+          name: nameController.text,
+          mobile: mobileController.text);
+      orderProvider.addNewOrder(orderM, cartProvider.checkout,nameMobile).then((value) {
         EasyLoading.dismiss();
         Navigator.pushNamedAndRemoveUntil(
             context,

@@ -48,6 +48,7 @@ dependencies:
   flutter_rating_bar:
   google_fonts:
   firebase_ui_auth: ^1.0.3
+  full_screen_image_null_safe: ^2.0.0
 
 
 dev_dependencies:

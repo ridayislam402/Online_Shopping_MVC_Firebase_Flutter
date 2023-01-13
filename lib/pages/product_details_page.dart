@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:online_shopping/auth/auth_service.dart';
 import 'package:online_shopping/pages/login_page2.dart';
 import 'package:online_shopping/pages/search_page.dart';
@@ -45,8 +46,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
          // SizedBox(height: 5,),
           InkWell(
             onTap: () {
-              Provider.of<CartProvider>(context,listen: false).clearCheckout();
-              Navigator.pushNamed(context, CartPage.routeName);
+              if(AuthService.user==null){
+                showbackDialog(context: context);
+              }else {
+                Provider.of<CartProvider>(context, listen: false)
+                    .clearCheckout();
+                Navigator.pushNamed(context, CartPage.routeName);
+              }
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -107,15 +113,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 Expanded(
                   child: ListView(
                     children: [
-                      FadeInImage.assetNetwork(
-                        placeholder: 'images/placeholder.png',
-                        image: product.imageUrl,
-                        fadeInCurve: Curves.bounceInOut,
-                        fadeInDuration: const Duration(seconds: 3),
-                        width: double.infinity,
-                        height: 300,
-                        fit: BoxFit.cover,
-                      ),
+
+                        FullScreenWidget(
+                          child: Hero(
+                            tag: Key(product.id.toString()),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'images/placeholder.png',
+                              image: product.imageUrl,
+                              fadeInCurve: Curves.bounceInOut,
+                              fadeInDuration: const Duration(seconds: 3),
+                              width: double.infinity,
+                              height: 300,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+
                       ListTile(
                         title: Text(product.name, style: TextStyle(fontSize: 20,color: Colors.white)),
                       ),
@@ -128,8 +141,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                       if (product.stock != 0)Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Card(
-                          elevation: 7,
+                        child: Container(
+                          color: Colors.white,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -157,7 +170,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   ),
                                   onPressed: () async {
                                     if(AuthService.user == null){
-                                      Navigator.pushNamed(context, LoginPage2.routeName);
+                                     // Navigator.pushNamed(context, LoginPage2.routeName);
+                                      showbackDialog(context: context);
                                     }else{
                                       EasyLoading.show(status: 'Please wait');
                                       await provider.rateProduct(pid, rating);
@@ -184,7 +198,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     onPressed: () {
 
                       if(AuthService.user == null){
-                        Navigator.pushNamed(context, LoginPage2.routeName);
+                       // Navigator.pushNamed(context, LoginPage2.routeName);
+                        showbackDialog(context: context);
                       }else {
                         if (AuthService.user!.isAnonymous) {
                           showMsg(context,

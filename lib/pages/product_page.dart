@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:online_shopping/auth/auth_service.dart';
 import 'package:online_shopping/pages/cart_page.dart';
 import 'package:online_shopping/pages/search_page.dart';
+import 'package:online_shopping/utils/helper_functions.dart';
 import 'package:provider/provider.dart';
 import '../customwidgets/category_list_view.dart';
 import '../customwidgets/main_drawer.dart';
@@ -124,8 +125,13 @@ class _ProductPageState extends State<ProductPage> {
             // SizedBox(height: 5,),
             InkWell(
               onTap: () {
-                Provider.of<CartProvider>(context,listen: false).clearCheckout();
-                Navigator.pushNamed(context, CartPage.routeName);
+                if(AuthService.user == null){
+                  showbackDialog(context: context);
+                }else {
+                  Provider.of<CartProvider>(context, listen: false)
+                      .clearCheckout();
+                  Navigator.pushNamed(context, CartPage.routeName);
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

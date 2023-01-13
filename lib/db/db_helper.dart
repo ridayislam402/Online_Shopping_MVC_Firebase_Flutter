@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:online_shopping/models/checkout_model.dart';
+import 'package:online_shopping/models/user_model_only_nm.dart';
 
 import '../models/cart_model.dart';
 import '../models/category_model.dart';
@@ -138,13 +139,15 @@ class DbHelper {
   static Future<DocumentSnapshot<Map<String, dynamic>>> getUserOnce(String uid) =>
       _db.collection(collectionUser).doc(uid).get();
 
-  static Future<void> addOrder(OrderModel orderModel, List<CheckoutModel> cartList) async {
+  static Future<void> addOrder(OrderModel orderModel, List<CheckoutModel> cartList, UserModel_only_namemobile nameMobile) async {
     final wb = _db.batch();
     final orderDoc = _db.collection(collectionOrder).doc();
     orderModel.orderId = orderDoc.id;
     wb.set(orderDoc, orderModel.toMap());
     final userDoc = _db.collection(collectionUser).doc(orderModel.userId);
     wb.update(userDoc, {'address' : orderModel.deliveryAddress.toMap()});
+    wb.update(userDoc, {'name' : nameMobile.name,
+                         'mobile' : nameMobile.mobile});
     for(var cartM in cartList) {
       final detailsDoc = orderDoc.collection(collectionOrderDetails).doc(cartM.productId);
       wb.set(detailsDoc, cartM.toMap());

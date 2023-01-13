@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_shopping/pages/checkout_page.dart';
+import 'package:online_shopping/utils/helper_functions.dart';
 import 'package:provider/provider.dart';
 
 import '../customwidgets/cart_item.dart';
@@ -22,7 +23,8 @@ class CartPage extends StatelessWidget {
               icon: const Icon(Icons.clear),
               tooltip: 'Clear items',
               onPressed: () {
-                provider.clearCart();
+                showCartDialog(context: context, provider: provider,);
+               // provider.clearCart();
               },
             ),
           )

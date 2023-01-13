@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:online_shopping/pages/launcher_page.dart';
 import 'package:online_shopping/pages/signup_page.dart';
+import 'package:online_shopping/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/auth_service.dart';
@@ -57,13 +58,35 @@ class _LoginPage2State extends State<LoginPage2> {
                         child: TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Email Address',
-                            prefixIcon: const Icon(Icons.email),
-
-                          ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                              fillColor: Colors.white,
+                              hintText: 'Email ....',
+                              prefixIcon: const Icon(Icons.email,color: Colors.black,),
+                              filled: true),
                           validator: (value) {
                             if(value == null || value.isEmpty) {
                               return 'This field must not be empty';
@@ -79,19 +102,44 @@ class _LoginPage2State extends State<LoginPage2> {
                           obscureText: isObscureText,
                           controller: passController,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Password',
-                            prefixIcon: const Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                  isObscureText ? Icons.visibility_off : Icons.visibility),
-                              onPressed: () => setState(() {
-                                isObscureText = !isObscureText;
-                              }),
-                            ),
-                          ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide:  BorderSide(
+                                      color: Colors.white60
+                                  )
+                              ),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                            //  prefixIcon: const Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                    isObscureText ? Icons.visibility_off : Icons.visibility),
+                                onPressed: () => setState(() {
+                                  isObscureText = !isObscureText;
+                                }),
+                              ),
+                              fillColor: Colors.white,
+                              hintText: 'password ....',
+                              prefixIcon: Icon(Icons.vpn_key_sharp,color: Colors.black,),
+                              filled: true),
+
                           validator: (value) {
                             if(value == null || value.isEmpty) {
                               return 'This field must not be empty';
@@ -102,18 +150,23 @@ class _LoginPage2State extends State<LoginPage2> {
                       ),
 
                       SizedBox(height: 10),
-                      SizedBox(height: 45,
-                          width: 100,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              isLogin = true;
+                      Material(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        child: InkWell(
+                          onTap: () {
+                            isLogin=true;
                             authenticate();
-                            }, //authenticate(),
-                            child: Text('Login',style: TextStyle(fontSize: 20),),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              onPrimary: Colors.black,
-                            ),)),
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 28),
+                            child: Text('Login',style: TextStyle(color: appBarColor,fontSize: 16),),
+                          ),
+
+
+                        ),
+                      ),
 
                       SizedBox(height: 10),
                       Row(
@@ -123,7 +176,7 @@ class _LoginPage2State extends State<LoginPage2> {
                           TextButton(
                               onPressed: () {
                               Navigator.pushNamed(context, SignUpPage.routeName);
-                          }, child: Text('SignUp', style: TextStyle(fontSize: 20,color: Colors.red),))
+                          }, child: Text('SignUp', style: TextStyle(fontSize: 20,color: Colors.green),))
                         ],
                       )
                      // Text(text),
