@@ -92,10 +92,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: provider.getProductById(pid),
         builder: (context, snapshot) {
-
           if(snapshot.hasData) {
             final product = ProductModel.fromMap(snapshot.data!.data()!);
             final isInCart = cartprovider.isInCart(product.id!);
+
             return Column(
               children: [
                 if (product.stock == 0)
@@ -110,126 +110,164 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           color: Colors.white),
                     ),
                   ),
+
                 Expanded(
-                  child: ListView(
+                  child: Stack(
                     children: [
-
-                        FullScreenWidget(
-                          child: Hero(
-                            tag: Key(product.id.toString()),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'images/placeholder.png',
-                              image: product.imageUrl,
-                              fadeInCurve: Curves.bounceInOut,
-                              fadeInDuration: const Duration(seconds: 3),
-                              width: double.infinity,
-                              height: 300,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-
-                      ListTile(
-                        title: Text(product.name, style: TextStyle(fontSize: 20,color: Colors.white)),
-                      ),
-                      ListTile(
-                        title: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
-                      ),
-                      ListTile(
-                        title: Text('Product Description', style: TextStyle(fontSize: 20,color: Colors.white),),
-                        subtitle: Text(product.description ?? 'Not Available',style: TextStyle(color: Colors.white)),
-                      ),
-                      if (product.stock != 0)Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text('Rate this Product', style: TextStyle(fontSize: 20),),
-                                RatingBar.builder(
-                                  initialRating: rating,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: appBarColor,
-                                  ),
-                                  onRatingUpdate: (value) {
-                                    rating = value;
-                                  },
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: appBarColor,
-                                  ),
-                                  onPressed: () async {
-                                    if(AuthService.user == null){
-                                     // Navigator.pushNamed(context, LoginPage2.routeName);
-                                      showbackDialog(context: context);
-                                    }else{
-                                      EasyLoading.show(status: 'Please wait');
-                                      await provider.rateProduct(pid, rating);
-                                      showMsg(context, 'Thanks for your rating');
-                                      EasyLoading.dismiss();
-                                    }
-
-                                  },
-                                  child: const Text('Submit'),
-                                ),
-
-                              ],
-                            ),
+                      FullScreenWidget(
+                        child: Hero(
+                          tag: Key(product.id.toString()),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'images/placeholder.png',
+                            image: product.imageUrl,
+                            fadeInCurve: Curves.bounceInOut,
+                            fadeInDuration: const Duration(seconds: 3),
+                            width: double.infinity,
+                            height: 300,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
+                  Container(
+                    margin: EdgeInsets.only(top: 280),
+                    height: double.infinity,
+                    child: Stack(
+                      children: [
+                        Container(
+                        //
+                          //margin: EdgeInsets.only(top: 200),
+                          padding: EdgeInsets.only(
+                           // top: 100,
+                            left: 20.0,
+                            right: 20.0,
+                          ),
+                          // height: 500,
+                          decoration: BoxDecoration(
+                            color: appBarColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: Text(product.name, style: TextStyle(fontSize: 20,color: Colors.white)),
+                                trailing: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
+                              ),
+                              SizedBox(height: 30,),
+                              /*ListTile(
+                                title: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
+                              ),*/
+                              ListTile(
+                                title: Text('Product Description', style: TextStyle(fontSize: 20,color: Colors.white),),
+                                subtitle: Text(product.description ?? 'Not Available',style: TextStyle(color: Colors.white)),
+                              ),
+                              SizedBox(height: 50,),
+                              if (product.stock != 0)Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Text('Rate this Product', style: TextStyle(fontSize: 20),),
+                                        RatingBar.builder(
+                                          initialRating: rating,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          itemCount: 5,
+                                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                          itemBuilder: (context, _) => const Icon(
+                                            Icons.star,
+                                            color: appBarColor,
+                                          ),
+                                          onRatingUpdate: (value) {
+                                            rating = value;
+                                          },
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: appBarColor,
+                                          ),
+                                          onPressed: () async {
+                                            if(AuthService.user == null){
+                                              // Navigator.pushNamed(context, LoginPage2.routeName);
+                                              showbackDialog(context: context);
+                                            }else{
+                                              EasyLoading.show(status: 'Please wait');
+                                              await provider.rateProduct(pid, rating);
+                                              showMsg(context, 'Thanks for your rating');
+                                              EasyLoading.dismiss();
+                                            }
+
+                                          },
+                                          child: const Text('Submit'),
+                                        ),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+
+
                     ],
                   ),
                 ),
 
-                if (product.stock != 0) SizedBox(height: 50,
-                  child: ElevatedButton(
-
-                    onPressed: () {
-
-                      if(AuthService.user == null){
-                       // Navigator.pushNamed(context, LoginPage2.routeName);
-                        showbackDialog(context: context);
-                      }else {
-                        if (AuthService.user!.isAnonymous) {
-                          showMsg(context,
-                              'Sign In before you add items to Cart');
-                          return;
+                if (product.stock != 0)
+                  Material(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(30),
+                    child: InkWell(
+                      onTap: () {
+                        if(AuthService.user == null){
+                          // Navigator.pushNamed(context, LoginPage2.routeName);
+                          showbackDialog(context: context);
+                        }else {
+                          if (AuthService.user!.isAnonymous) {
+                            showMsg(context,
+                                'Sign In before you add items to Cart');
+                            return;
+                          }
+                          if (isInCart) {
+                            cartprovider.removeFromCart(
+                                product.id!);
+                          } else {
+                            final cartModel = CartModel(
+                              productId: product.id,
+                              productName: product.name,
+                              salePrice: product.salesPrice,
+                              imageUrl: product.imageUrl,
+                              stock: product.stock,
+                              category: product.category,
+                            );
+                            cartprovider.addToCart(cartModel);
+                          }
                         }
-                        if (isInCart) {
-                          cartprovider.removeFromCart(
-                              product.id!);
-                        } else {
-                          final cartModel = CartModel(
-                            productId: product.id,
-                            productName: product.name,
-                            salePrice: product.salesPrice,
-                            imageUrl: product.imageUrl,
-                            stock: product.stock,
-                            category: product.category,
-                          );
-                          cartprovider.addToCart(cartModel);
-                        }
-                      }
-                      setState(() {});
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        onPrimary: appBarColor
+                        setState(() {});
+                      },
+                      borderRadius: BorderRadius.circular(30),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 28),
+                       // child: Text('Login',style: TextStyle(color: appBarColor,fontSize: 16),),
+                        child: Text(isInCart ? 'Remove from Cart' : 'Add to Cart', style: TextStyle(color: Colors.white,fontSize: 15),),
+                      ),
+
+
                     ),
-                    child: Text(isInCart ? 'Remove from Cart' : 'Add to Cart', style: TextStyle(color: Colors.white,fontSize: 15),),
                   ),
-                ),
+                SizedBox(height: 10,)
               ],
             );
           }

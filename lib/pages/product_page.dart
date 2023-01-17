@@ -82,6 +82,9 @@ class _ProductPageState extends State<ProductPage> {
   Widget _buildSliverList(BuildContext context, ProductProvider provider) {
     return CustomScrollView(
       slivers: [
+        if(provider.filteredProductList==0)
+          CircularProgressIndicator(),
+
         SliverAppBar(
           pinned: true,
           title: Text('Products'),
@@ -102,7 +105,9 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
+                    child: provider.filteredProductList.isEmpty?
+                        Center(child: CircularProgressIndicator()):
+                    Text(
                       '${provider.filteredProductList.length} item(s) found',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
@@ -168,6 +173,8 @@ class _ProductPageState extends State<ProductPage> {
 
           ],
         ),
+        provider.filteredProductList == 0?
+        Center(child: CircularProgressIndicator()):
         SliverGrid.count(
           crossAxisCount: 2,
           childAspectRatio: 0.65,

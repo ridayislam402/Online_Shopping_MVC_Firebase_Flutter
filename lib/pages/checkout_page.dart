@@ -422,7 +422,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                   fillColor: Colors.white,
-                  hintText: 'Enter Name',
+                  hintText: 'Enter your Name',
                   //  prefixIcon: const Icon(Icons.email,color: Colors.black,),
                   filled: true),
 

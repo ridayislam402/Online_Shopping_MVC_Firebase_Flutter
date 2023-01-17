@@ -1,11 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:online_shopping/models/cart_model.dart';
 import 'package:online_shopping/pages/login_page2.dart';
 import 'package:online_shopping/pages/signup_page.dart';
 import 'package:online_shopping/providers/card_provider.dart';
+import 'package:online_shopping/providers/order_provider.dart';
 import 'package:online_shopping/utils/constants.dart';
 import 'package:provider/provider.dart';
+
+import '../models/expansion_item.dart';
 
 String getFormattedDateTime(DateTime dateTime, String pattern) =>
     DateFormat(pattern).format(dateTime);
@@ -72,6 +76,75 @@ void showCartDialog({
         }, child: Text('Cancel')),
         ElevatedButton(onPressed: () {
           provider.clearCart();
+          Navigator.pop(context);
+        },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,),
+            child: Text('Yes'))
+      ],
+    ),
+  );
+}
+
+void showOrderCancelDialog({
+  required BuildContext context,
+  required ExpansionItem item,
+  required OrderProvider provider
+
+}) {
+  //final _descController = TextEditingController();
+  showDialog(
+    //  barrierDismissible: false,
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: appBarColor,
+      title: Text('Are You Sure?',style: TextStyle(color: Colors.white),),
+      content: Padding(
+        padding: EdgeInsets.all(8),
+        child: Text('Cancel this Order !!!', style: TextStyle(color: Colors.white),),
+      ),
+      actions: [
+        TextButton(onPressed: () {
+          Navigator.pop(context);
+        }, child: Text('No')),
+        ElevatedButton(onPressed: () {
+          provider.cancelOrder(item.orderModel.orderId!);
+          Navigator.pop(context);
+        },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,),
+            child: Text('Yes'))
+      ],
+    ),
+  );
+}
+
+void showRemoveCartItemDialog({
+  required BuildContext context,
+  required CartProvider provider,
+  required CartModel pid,
+  //required VoidCallback onDelete,
+  
+
+}) {
+  //final _descController = TextEditingController();
+  showDialog(
+    //  barrierDismissible: false,
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: appBarColor,
+      title: Text('Are You Sure?',style: TextStyle(color: Colors.white),),
+      content: Padding(
+        padding: EdgeInsets.all(8),
+        child: Text('Clear All The Cart Item', style: TextStyle(color: Colors.white),),
+      ),
+      actions: [
+        TextButton(onPressed: () {
+          Navigator.pop(context);
+        }, child: Text('Cancel')),
+        ElevatedButton(onPressed: () {
+          provider.removeFromCart(pid.productId!);
+       //   provider.clearCart();
           Navigator.pop(context);
         },
             style: ElevatedButton.styleFrom(

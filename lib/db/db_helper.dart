@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:online_shopping/models/checkout_model.dart';
 import 'package:online_shopping/models/user_model_only_nm.dart';
+import 'package:online_shopping/utils/constants.dart';
 
 import '../models/cart_model.dart';
 import '../models/category_model.dart';
@@ -78,6 +79,13 @@ class DbHelper {
         .collection(collectionCart)
         .doc(pid)
         .delete();
+  }
+
+  //cancel Order
+  static Future<void> cancelOrder(String orderid){
+    return _db.collection(collectionOrder)
+        .doc(orderid)
+        .update({'orderStatus': OrderStatus.cancelled});
   }
 
   // checkout

@@ -64,6 +64,9 @@ class OrderProvider extends ChangeNotifier{
     return DbHelper.clearCheckoutItems(orderModel.userId!, checkoutlist);
   }
 
-
+//Order cancel
+  Future<void> cancelOrder(String orderId) {
+    return DbHelper.cancelOrder(orderId);
+  }
 
 }

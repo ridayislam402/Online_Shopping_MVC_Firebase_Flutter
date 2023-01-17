@@ -21,6 +21,8 @@ class OrderSuccessfulPage extends StatelessWidget {
           Icon(Icons.done, size: 150,color: Colors.white,),
           Text('Your order has been placed successfully', style: TextStyle(fontSize: 20, color: Colors.white),),
           SizedBox(height: 20,),
+          Text('Thank you !!!', style: TextStyle(fontSize: 20, color: Colors.white),),
+          SizedBox(height: 20,),
           SizedBox(height: 45,
               child: ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context, LauncherPage.routeName),

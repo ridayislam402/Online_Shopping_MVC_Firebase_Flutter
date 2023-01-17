@@ -36,6 +36,8 @@ class CartProvider extends ChangeNotifier{
     return DbHelper.removeCartItem(productId, AuthService.user!.uid);
   }
 
+
+
   //checkout
   Future<void> removeFromCheckout(String productId) {
     return DbHelper.removeCheckoutItem(productId, AuthService.user!.uid);

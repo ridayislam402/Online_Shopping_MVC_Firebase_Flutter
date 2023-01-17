@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_shopping/models/checkout_model.dart';
 import 'package:online_shopping/providers/card_provider.dart';
+import 'package:online_shopping/utils/helper_functions.dart';
 import 'package:provider/provider.dart';
 
 import '../models/cart_model.dart';
@@ -141,7 +142,8 @@ bool _isVisible = true;
                             color: Theme.of(context).errorColor,
                             size: 35,
                           ),
-                          onPressed: widget.onDelete,
+                          onPressed: () => showRemoveCartItemDialog(context: context,  provider: cartP, pid: widget.cartModel),
+                          //widget.onDelete,
                         ),
                       ],
                     ),

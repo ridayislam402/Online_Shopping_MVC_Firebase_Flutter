@@ -50,6 +50,12 @@ class _OrderPageState extends State<OrderPage> {
               title: Text(getFormattedDateTime(item.orderModel.orderDate.timestamp.toDate(), 'dd/MM/yyyy hh:mm:s a')),
               subtitle: Text(item.orderModel.orderStatus),
               trailing: Text('$currencySymbol${item.orderModel.grandTotal}'),
+              leading: item.orderModel.orderStatus == OrderStatus.cancelled ? null:
+              ElevatedButton(
+                  onPressed: () {
+                    showOrderCancelDialog(context: context, item: item, provider: provider);
+                    // provider.cancelOrder(item.orderModel.orderId!);
+                  }, child: Text('Cancel Order')),
             );
           },
           body: ListView.builder(
@@ -61,6 +67,7 @@ class _OrderPageState extends State<OrderPage> {
                 title: Text(cart.productName!),
                 subtitle: Text('Quantity: ${cart.quantity}'),
                 trailing: Text('$currencySymbol${cart.salePrice}'),
+
               );
             },
           ),

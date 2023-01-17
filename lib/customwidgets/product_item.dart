@@ -25,7 +25,6 @@ class _ProductItemState extends State<ProductItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-
         if (widget.productModel.stock != 0) Navigator.pushNamed(
           context,
           ProductDetailsPage.routeName,
