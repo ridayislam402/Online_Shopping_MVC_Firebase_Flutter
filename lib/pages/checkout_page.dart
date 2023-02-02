@@ -438,6 +438,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             TextFormField(
               controller: mobileController,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),

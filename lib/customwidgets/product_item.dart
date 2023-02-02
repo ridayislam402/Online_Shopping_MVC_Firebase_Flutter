@@ -100,7 +100,7 @@ class _ProductItemState extends State<ProductItem> {
               ),
             ),
             Positioned(
-              right: 0,
+              right: 1,
               child:
               Consumer<CartProvider>(builder: (context, provider, child) {
                 final isInCart = provider.isInCart(widget.productModel.id!);

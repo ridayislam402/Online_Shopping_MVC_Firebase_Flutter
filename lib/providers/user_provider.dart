@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:online_shopping/models/address_model.dart';
-import 'package:online_shopping/models/user_model_only_nm.dart';
-
 import '../auth/auth_service.dart';
 import '../db/db_helper.dart';
 import '../models/user_model.dart';
@@ -33,5 +34,28 @@ class UserProvider extends ChangeNotifier{
   Future<UserModel> getUserByUid() async {
     final snapshot = await DbHelper.getUserOnce(AuthService.user!.uid);
     return UserModel.fromMap(snapshot.data()!);
+  }
+
+  Future<void> updateUserDet(String field, dynamic value, ) {
+    return DbHelper.updateUserDetail(AuthService.user!.uid!, {field : value});
+  }
+
+  /*Future<void> updateUserDet2(String field, dynamic value, ) {
+    return DbHelper.updateUserDetail(AuthService.user!.uid!, {field : {'streetAddress':value}});
+  }*/
+
+ Future<void> updateUserDet2(String field, AddressModel addressModel, ) {
+    return DbHelper.updateUserDetail(AuthService.user!.uid!, {field : addressModel.toMap()});
+  }
+
+  Future<String> uploadImage(String path) async {
+    final imageName = DateTime
+        .now()
+        .microsecondsSinceEpoch
+        .toString();
+    final photoRef = FirebaseStorage.instance.ref().child('Picture/$imageName');
+    final uploadTask = photoRef.putFile(File(path));
+    final snapshot = await uploadTask.whenComplete(() => null);
+    return snapshot.ref.getDownloadURL();
   }
 }

@@ -1,6 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:online_shopping/models/address_model.dart';
 
+const String gUserName = 'name';
+const String gUserMobile = 'mobile';
+const String gUserAddress = 'address';
+const String gUserStreetAddress = 'streetAddress';
+const String gUserArea = 'area';
+const String gUserCity = 'city';
+const String gUserZipCode = 'zipCode';
+const String gUserimage = 'image';
+
+
+
 
 class UserModel {
   String uid;

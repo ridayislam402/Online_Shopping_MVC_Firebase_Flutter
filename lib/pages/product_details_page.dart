@@ -149,71 +149,73 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               topRight: Radius.circular(25),
                             ),
                           ),
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Text(product.name, style: TextStyle(fontSize: 20,color: Colors.white)),
-                                trailing: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
-                              ),
-                              SizedBox(height: 30,),
-                              /*ListTile(
-                                title: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
-                              ),*/
-                              ListTile(
-                                title: Text('Product Description', style: TextStyle(fontSize: 20,color: Colors.white),),
-                                subtitle: Text(product.description ?? 'Not Available',style: TextStyle(color: Colors.white)),
-                              ),
-                              SizedBox(height: 50,),
-                              if (product.stock != 0)Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Text('Rate this Product', style: TextStyle(fontSize: 20),),
-                                        RatingBar.builder(
-                                          initialRating: rating,
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: true,
-                                          itemCount: 5,
-                                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                          itemBuilder: (context, _) => const Icon(
-                                            Icons.star,
-                                            color: appBarColor,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text(product.name, style: TextStyle(fontSize: 30,color: Colors.white)),
+                                  trailing: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
+                                ),
+                                SizedBox(height: 30,),
+                                /*ListTile(
+                                  title: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
+                                ),*/
+                                ListTile(
+                                  title: Text('Product Description', style: TextStyle(fontSize: 20,color: Colors.white),),
+                                  subtitle: Text(product.description ?? 'Not Available',style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 50,),
+                                if (product.stock != 0)Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text('Rate this Product', style: TextStyle(fontSize: 20),),
+                                          RatingBar.builder(
+                                            initialRating: rating,
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                            itemBuilder: (context, _) => const Icon(
+                                              Icons.star,
+                                              color: appBarColor,
+                                            ),
+                                            onRatingUpdate: (value) {
+                                              rating = value;
+                                            },
                                           ),
-                                          onRatingUpdate: (value) {
-                                            rating = value;
-                                          },
-                                        ),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: appBarColor,
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: appBarColor,
+                                            ),
+                                            onPressed: () async {
+                                              if(AuthService.user == null){
+                                                // Navigator.pushNamed(context, LoginPage2.routeName);
+                                                showbackDialog(context: context);
+                                              }else{
+                                                EasyLoading.show(status: 'Please wait');
+                                                await provider.rateProduct(pid, rating);
+                                                showMsg(context, 'Thanks for your rating');
+                                                EasyLoading.dismiss();
+                                              }
+
+                                            },
+                                            child: const Text('Submit'),
                                           ),
-                                          onPressed: () async {
-                                            if(AuthService.user == null){
-                                              // Navigator.pushNamed(context, LoginPage2.routeName);
-                                              showbackDialog(context: context);
-                                            }else{
-                                              EasyLoading.show(status: 'Please wait');
-                                              await provider.rateProduct(pid, rating);
-                                              showMsg(context, 'Thanks for your rating');
-                                              EasyLoading.dismiss();
-                                            }
 
-                                          },
-                                          child: const Text('Submit'),
-                                        ),
-
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -224,7 +226,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ],
                   ),
                 ),
-
+                SizedBox(height: 5,),
                 if (product.stock != 0)
                   Material(
                     color: Colors.green,

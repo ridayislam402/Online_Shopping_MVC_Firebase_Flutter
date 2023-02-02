@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +14,7 @@ import 'package:online_shopping/pages/product_details_page.dart';
 import 'package:online_shopping/pages/product_page.dart';
 import 'package:online_shopping/pages/signup_page.dart';
 import 'package:online_shopping/pages/user_page.dart';
+import 'package:online_shopping/pages/user_page2.dart';
 import 'package:online_shopping/pages/welcome_page.dart';
 import 'package:online_shopping/providers/card_provider.dart';
 import 'package:online_shopping/providers/order_provider.dart';
@@ -68,7 +70,7 @@ class MyApp extends StatelessWidget {
         SignUpPage.routeName : (context) => SignUpPage(),
         UserPage.routeName : (context) => UserPage(),
         ProductDetailsPage.routeName : (context) => ProductDetailsPage(),
-       // SearchPage.routeName : (context) => SearchPage(),
+        ProfilePage.routeName : (context) => ProfilePage(),
        // SearchScreen.routeName : (context) => SearchScreen(),
 
 

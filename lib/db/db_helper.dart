@@ -203,6 +203,11 @@ class DbHelper {
         .update(map);
   }
 
+  static Future<void> updateUserDetail(String id, Map<String, dynamic> map) {
+    return _db.collection(collectionUser).doc(id)
+        .update(map);
+  }
+
   static Stream<QuerySnapshot<Map<String, dynamic>>> getProductByName(String name) =>
       _db.collection(collectionProduct).where("name",isGreaterThanOrEqualTo: name).snapshots();
 }
