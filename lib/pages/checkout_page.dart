@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_sslcommerz/sslcommerz.dart';
 import 'package:online_shopping/models/user_model_only_nm.dart';
 import 'package:online_shopping/pages/product_page.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,11 @@ import '../providers/order_provider.dart';
 import '../providers/user_provider.dart';
 import '../utils/constants.dart';
 import 'order_successful_page.dart';
+import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
+import 'package:flutter_sslcommerz/model/SSLCTransactionInfoModel.dart';
+import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
+import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckoutPage extends StatefulWidget {
   static const String routeName = '/checkout';
@@ -25,6 +31,7 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  SSLCTransactionInfoModel? result;
   late CartProvider cartProvider;
   late OrderProvider orderProvider;
   late UserProvider userProvider;
@@ -176,6 +183,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               onChanged: (value) {
                 setState(() {
                   paymentMethodGroupValue = value!;
+                  sslCommerzGeneralCall();
                 });
               },
             ),
@@ -602,11 +610,56 @@ class _CheckoutPageState extends State<CheckoutPage> {
         Navigator.pushNamedAndRemoveUntil(
             context,
             OrderSuccessfulPage.routeName,
-            ModalRoute.withName(ProductPage.routeName));
+            ModalRoute.withName(ProductPage.routeName),arguments: result==null?null:result!.amount);
       }).catchError((error) {
         EasyLoading.dismiss();
       });
       cartProvider.clearCart();
+    }
+  }
+
+  Future<void> sslCommerzGeneralCall() async {
+    Sslcommerz sslcommerz = Sslcommerz(
+      initializer: SSLCommerzInitialization(
+        //Use the ipn if you have valid one, or it will fail the transaction.
+        ipn_url: "www.ipnurl.com",
+        multi_card_name: 'multicard',
+        currency: SSLCurrencyType.BDT,
+        product_category: "Food",
+        sdkType: SSLCSdkType.TESTBOX!,
+        store_id: 'ririt63e139dc3f66e',
+        store_passwd: 'ririt63e139dc3f66e@ssl',
+        total_amount: orderProvider.getGrandTotal(cartProvider.getCheckoutSubtotal()).toDouble(),
+        tran_id: "1231123131212",
+      ),
+    );
+    try {
+       result = await sslcommerz.payNow();
+
+      if (result!.status!.toLowerCase() == "failed") {
+        Fluttertoast.showToast(
+            msg: "Transaction is Failed....",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        _saveOrder();
+
+        Fluttertoast.showToast(
+            msg:
+            "Transaction is ${result!.status} and Amount is ${result!.amount}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_shopping/pages/login_page2.dart';
 import 'package:online_shopping/pages/user_page2.dart';
+import 'package:online_shopping/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/auth_service.dart';
@@ -21,7 +22,8 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerState extends State<MainDrawer> {
-  String? imageUrl;
+  String? imageUrl,name;
+
   bool isFirst = true;
   late UserModel userModel;
   late final userProvider;
@@ -36,6 +38,7 @@ class _MainDrawerState extends State<MainDrawer> {
 
         if(userModel!.image! != null){
           imageUrl = userModel.image!;
+          name = userModel.name!;
         }
       });
     });
@@ -58,7 +61,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   child: FittedBox(
                       fit: BoxFit.fill,
                       child:
-                      Image.network('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg')
+                      Image.asset('images/main_top.png')
                   ),
                 ),
               ),
@@ -84,6 +87,9 @@ class _MainDrawerState extends State<MainDrawer> {
 
 
             ],
+          ),
+          ListTile(
+            title: name == null?null:Text('Hi, $name', style: TextStyle(fontSize: 20,color: appBarColor),),
           ),
           
           ListTile(

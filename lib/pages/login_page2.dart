@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:online_shopping/pages/launcher_page.dart';
 import 'package:online_shopping/pages/signup_page.dart';
 import 'package:online_shopping/utils/constants.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../auth/auth_service.dart';
 import '../providers/user_provider.dart';
 class LoginPage2 extends StatefulWidget {
-  static const String routeName='/login';
+  static const String routeName='/login2';
 
   @override
   State<LoginPage2> createState() => _LoginPage2State();
@@ -30,6 +31,12 @@ class _LoginPage2State extends State<LoginPage2> {
     passController.dispose();
     super.dispose();
   }
+  bool _isloading = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool exists = false;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -178,8 +185,21 @@ class _LoginPage2State extends State<LoginPage2> {
                               Navigator.pushNamed(context, SignUpPage.routeName);
                           }, child: Text('SignUp', style: TextStyle(fontSize: 20,color: Colors.green),))
                         ],
-                      )
-                     // Text(text),
+                      ),
+                     SizedBox(height: 10,),
+
+                      FloatingActionButton.extended(
+                        label: Text('Google', style: TextStyle(color: Colors.blue),), // <-- Text
+                        backgroundColor: Colors.white,
+                        icon: Icon( // <-- Icon
+                          Icons.g_mobiledata,color: Colors.blue,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          _googleSignin();
+                        },
+                      ),
+                      SizedBox(height: 20,),
                     ],),
                 )
               ],)
@@ -197,8 +217,7 @@ class _LoginPage2State extends State<LoginPage2> {
         } else {
           status = await AuthService.register(emailController.text, passController.text);
           if(mounted) {
-            await Provider.of<UserProvider>(context, listen: false)
-                .addNewUserlogin(AuthService.user!.uid,  AuthService.user!.email!, Timestamp.fromDate(AuthService.user!.metadata.creationTime!));
+            await Provider.of<UserProvider>(context, listen: false).addNewUserlogin(AuthService.user!.uid,  AuthService.user!.email!, Timestamp.fromDate(AuthService.user!.metadata.creationTime!));
 
           }
         }
@@ -216,6 +235,67 @@ class _LoginPage2State extends State<LoginPage2> {
           errMsg = error.message!;
         });
       }
+    }
+  }
+
+
+  Future<List<String>> fetchSignInMethodsForEmail(String email) {
+    return _auth.fetchSignInMethodsForEmail(email);
+  }
+
+  Future<void> _googleSignin() async{
+    final _googleSignIn = GoogleSignIn();
+    final googleAccount =await _googleSignIn.signIn();
+    print('2 ${googleAccount!.email!}');
+    fetchSignInMethodsForEmail(googleAccount.email).then((value) {
+      if(value.length > 0){
+        exists = true;
+      }
+      print('email   : $value');
+    });
+   if(googleAccount !=null){
+      final googleAuth = await googleAccount.authentication;
+      print('3 $googleAuth');
+
+      if(googleAuth.accessToken != null && googleAuth.idToken != null){
+        try{
+          await _auth.signInWithCredential(
+              GoogleAuthProvider.credential(idToken: googleAuth.idToken,
+                  accessToken: googleAuth.accessToken)
+          );
+
+         EasyLoading.show(status: 'please wait ...');
+
+          if(exists) {
+            if(mounted) {
+              EasyLoading.dismiss();
+              print('mounted ok');
+
+              Navigator.pushReplacementNamed(context, LauncherPage.routeName);
+
+            }
+          }else{
+            if(mounted) {
+              await Provider.of<UserProvider>(context, listen: false).addNewUserlogin(AuthService.user!.uid,  AuthService.user!.email!, Timestamp.fromDate(AuthService.user!.metadata.creationTime!));
+              print('Login ok');
+              if(mounted) {
+                EasyLoading.dismiss();
+                Navigator.pushReplacementNamed(context, LauncherPage.routeName);
+              }
+            }
+          }
+
+        }on FirebaseException catch (error){
+          setState(() {
+            errMsg = error.message!;
+          });
+        }catch(error){
+
+        }finally{
+
+        }
+      }
+
     }
   }
 }

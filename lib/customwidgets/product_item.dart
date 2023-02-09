@@ -131,6 +131,7 @@ class _ProductItemState extends State<ProductItem> {
                           imageUrl: widget.productModel.imageUrl,
                           stock: widget.productModel.stock,
                           category: widget.productModel.category,
+                          size: 'free'
                         );
                         provider.addToCart(cartModel);
                       }

@@ -5,7 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:online_shopping/auth/auth_service.dart';
-import 'package:online_shopping/pages/login_page2.dart';
 import 'package:online_shopping/pages/search_page.dart';
 import 'package:online_shopping/providers/card_provider.dart';
 import 'package:provider/provider.dart';
@@ -25,14 +24,15 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  //const ProductDetailsPage({Key? key,ProductModel productModel}) : super(key: key);
+  String? size = 'free';
   @override
   Widget build(BuildContext context) {
     double rating = 0.0;
     final pid = ModalRoute.of(context)!.settings.arguments as String;
     final provider = Provider.of<ProductProvider>(context, listen: false);
     final cartprovider = Provider.of<CartProvider>(context, listen: false);
-
+    final productlist = provider.filteredProductList;
+    print('rrr:: $productlist');
     return Scaffold(
       backgroundColor: appBarColor,
       appBar: AppBar(
@@ -95,7 +95,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           if(snapshot.hasData) {
             final product = ProductModel.fromMap(snapshot.data!.data()!);
             final isInCart = cartprovider.isInCart(product.id!);
-
+            print('pppp :: $product');
             return Column(
               children: [
                 if (product.stock == 0)
@@ -155,6 +155,75 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ListTile(
                                   title: Text(product.name, style: TextStyle(fontSize: 30,color: Colors.white)),
                                   trailing: Text('$currencySymbol${product.salesPrice}', style: TextStyle(fontSize: 30,color: Colors.white),),
+                                ),
+                                SizedBox(height: 20,),
+                               if(product.size == null) ListTile(
+                                  title: Row(
+                                    children: [
+                                      Text( "Size:", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold,),),
+                                      Row(
+                                        children: [
+                                          Radio(
+                                             value: 'M',
+                                             groupValue: size,
+                                             toggleable: true,
+                                            fillColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                                            onChanged: (value) {
+                                               setState(() {
+                                                size=value;
+                                               },);
+                                               //idc=5;
+                                               //Future.delayed(const Duration(seconds: 3), () => idc=5);
+
+                                             },
+                                           ),
+                                          Text('M', style: TextStyle(color: Colors.white),)
+                                        ],
+                                      ),
+                                      SizedBox(width: 25,),
+                                      Row(
+                                        children: [
+                                          Radio(
+                                            value: 'L',
+                                            groupValue: size,
+                                            toggleable: true,
+                                            fillColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                size=value;
+
+                                              },);
+                                              //idc=5;
+                                              //Future.delayed(const Duration(seconds: 3), () => idc=5);
+
+                                            },
+                                          ),
+                                          Text('L', style: TextStyle(color: Colors.white),)
+                                        ],
+                                      ),
+                                      SizedBox(width: 25,),
+                                      Row(
+                                        children: [
+                                          Radio(
+                                            value: 'XL',
+                                            groupValue: size,
+                                            toggleable: true,
+                                            fillColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                size=value;
+
+                                              },);
+                                              //idc=5;
+                                              //Future.delayed(const Duration(seconds: 3), () => idc=5);
+
+                                            },
+                                          ),
+                                          Text('XL', style: TextStyle(color: Colors.white),)
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(height: 30,),
                                 /*ListTile(
@@ -253,6 +322,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               imageUrl: product.imageUrl,
                               stock: product.stock,
                               category: product.category,
+                              size: size,
+
                             );
                             cartprovider.addToCart(cartModel);
                           }

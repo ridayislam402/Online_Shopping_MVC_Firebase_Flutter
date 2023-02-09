@@ -44,6 +44,8 @@ bool _isVisible = true;
       stock: widget.cartModel.stock,
       category: widget.cartModel.category,
       quantity: widget.cartModel.quantity,
+      size: widget.cartModel.size
+
     );
     /*for(int i=0;i<cartP.checkout.length;i++){
       if(widget.cartModel.productId==checkoutModel.productId){

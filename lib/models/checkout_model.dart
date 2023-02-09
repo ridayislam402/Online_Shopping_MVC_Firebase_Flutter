@@ -6,10 +6,13 @@ const String checkoutProductPrice = 'productPrice';
 const String checkoutProductQuantity = 'productQuantity';
 const String checkoutProductStock = 'productStock';
 const String checkoutProductCategory = 'productCategory';
+const String cartProductSize = 'productSize';
 
 class CheckoutModel{
   String? productId, productName, imageUrl, category;
   num salePrice, quantity, stock;
+  String? size = 'free';
+
 
 
   CheckoutModel(
@@ -19,7 +22,9 @@ class CheckoutModel{
         this.category,
         required this.salePrice,
         required this.stock,
-        this.quantity = 1});
+        this.quantity = 1,
+        this.size
+      });
 
   Map<String, dynamic> toMap(){
     return <String, dynamic> {
@@ -30,6 +35,7 @@ class CheckoutModel{
       checkoutProductQuantity : quantity,
       checkoutProductStock : stock,
       checkoutProductCategory : category,
+      cartProductSize : size,
     };
   }
 
@@ -42,6 +48,7 @@ class CheckoutModel{
       quantity: map[checkoutProductQuantity],
       stock: map[checkoutProductStock],
       category: map[checkoutProductCategory],
+      size: map[cartProductSize],
     );
   }
 }

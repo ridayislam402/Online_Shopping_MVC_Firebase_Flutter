@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: FittedBox(
                             fit: BoxFit.fill,
                             child:
-                            Image.network('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg')
+                            Image.asset('images/main_top.png')
                           ),
                         ),
                       ),
@@ -432,21 +432,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                   SizedBox(height: 20),
-                  Material(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    child: InkWell(
-                      onTap: () {
-                       _saveUser();
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 28),
-                        child: Text('Update',style: TextStyle(color: appBarColor,fontSize: 16),),
-                      ),
 
-
+                  FloatingActionButton.extended(
+                    label: Text('Update', style: TextStyle(color: appBarColor),), // <-- Text
+                    backgroundColor: Colors.white,
+                    icon: Icon( // <-- Icon
+                      Icons.upload,color: appBarColor,
+                      size: 24.0,
                     ),
+                    onPressed: () {
+                      _saveUser();                    },
                   ),
                //   ElevatedButton(onPressed: _saveOrder, child: Text('Update'))
                   SizedBox(height: 20,)
@@ -478,11 +473,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _saveUser() async {
     if (_formKey.currentState!.validate()) {
+      EasyLoading.show(status: 'Please Wait...');
+
       final addressModel = AddressModel(streetAddress: addressController.text, area: area!, city: city!, zipCode: zcodeController.text);
      await Provider.of<UserProvider>(context,listen: false).updateUserDet2(gUserAddress , addressModel);
      await Provider.of<UserProvider>(context,listen: false).updateUserDet(gUserName, nameController.text);
-     await Provider.of<UserProvider>(context,listen: false).updateUserDet(gUserMobile, mobileController.text);
-      final imageUrl = await Provider.of<UserProvider>(context,listen: false).uploadImage(_localImagePath!);
+     await Provider.of<UserProvider>(context,listen: false).updateUserDet(gUserMobile, mobileController.text).then((value) {
+       setState(() {
+         EasyLoading.dismiss();
+       });
+     });
+    //  final imageUrl = await Provider.of<UserProvider>(context,listen: false).uploadImage(_localImagePath!);
 
 
 

@@ -10,6 +10,8 @@ class OrderSuccessfulPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final result = ModalRoute.of(context)!.settings.arguments;
+
     return Scaffold(
       backgroundColor: appBarColor,
       appBar: AppBar(
@@ -19,6 +21,12 @@ class OrderSuccessfulPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.done, size: 150,color: Colors.white,),
+          SizedBox(height: 20,),
+          if(result!=null)Text('Total Payment $currencySymbol$result Successfull', style: TextStyle(fontSize: 20, color: Colors.white),),
+
+          SizedBox(height: 20,),
+
+
           Text('Your order has been placed successfully', style: TextStyle(fontSize: 20, color: Colors.white),),
           SizedBox(height: 20,),
           Text('Thank you !!!', style: TextStyle(fontSize: 20, color: Colors.white),),
@@ -26,7 +34,7 @@ class OrderSuccessfulPage extends StatelessWidget {
           SizedBox(height: 45,
               child: ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context, LauncherPage.routeName),
-                child: Text('Get Another Product',style: TextStyle(fontSize: 15),),
+                child: Text('Get More Product',style: TextStyle(fontSize: 15),),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   onPrimary: Colors.black,

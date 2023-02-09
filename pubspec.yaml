@@ -49,6 +49,10 @@ dependencies:
   google_fonts:
   firebase_ui_auth: ^1.0.3
   full_screen_image_null_safe: ^2.0.0
+  google_sign_in: ^5.4.4
+  flutter_sslcommerz: ^2.2.2-nullsafety.0
+  fluttertoast: ^8.1.2
+
 
 
 dev_dependencies:

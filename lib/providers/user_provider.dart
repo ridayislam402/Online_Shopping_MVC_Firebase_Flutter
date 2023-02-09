@@ -53,7 +53,7 @@ class UserProvider extends ChangeNotifier{
         .now()
         .microsecondsSinceEpoch
         .toString();
-    final photoRef = FirebaseStorage.instance.ref().child('Picture/$imageName');
+    final photoRef = FirebaseStorage.instance.ref().child('UserProfilePicture/$imageName');
     final uploadTask = photoRef.putFile(File(path));
     final snapshot = await uploadTask.whenComplete(() => null);
     return snapshot.ref.getDownloadURL();
